@@ -57,7 +57,7 @@ def main():
 
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, 'ldnvpnind', appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-    indicator.set_icon(icon_fail)
+    indicator.set_icon(icon_unknown)
     indicator.set_menu(build_menu())
 
     vpn_is_connected(indicator)
