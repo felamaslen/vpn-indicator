@@ -1,0 +1,16 @@
+{
+  "name": "vpn-indicator",
+  "version": "1.0.0",
+  "description": "Indicator server for VPN status",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fela Maslen",
+  "license": "MIT",
+  "dependencies": {
+    "default-network": "^0.2.0",
+    "express": "^4.15.4"
+  }
+}
