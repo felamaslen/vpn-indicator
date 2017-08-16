@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # flake8: noqa
 
+"""
+Main app entry point
+"""
+
 import os
 import gi
 gi.require_version('Gtk', '3.0')
@@ -14,8 +18,7 @@ from threading import Timer
 import urllib.request
 import socket
 
-APPINDICATOR_ID = 'vpnindicator'
-SERVER_URL = 'http://192.168.3.1:8000'
+from settings import APPINDICATOR_ID, SERVER_URL
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 icon_success = dir_path + '/success.svg'
