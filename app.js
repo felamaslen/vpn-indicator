@@ -1,15 +1,29 @@
 const express = require('express');
-const route = require('default-network');
+const iprule = require('iproute').rule;
+
+require('dotenv').config();
 
 function isVPNDefaultGateway() {
+    const vpnTable = 'vpndef1';
+    const subnetLan = '192.168.3.0/24';
+
     return new Promise((resolve, reject) => {
-        route.collect((err, data) => {
+        iprule.show((err, rules) => {
             if (err) {
-                reject(err);
+                return reject(err);
             }
 
-            const defaultIsTun = Object.keys(data)[0].indexOf('tun') === 0;
-            resolve(defaultIsTun);
+            const tunnelIndex = rules.findIndex(
+                rule => rule.from === subnetLan && rule.lookup === vpnTable
+            );
+
+            const lanIndex = rules.findIndex(
+                rule => rule.from === subnetLan
+            );
+
+            const defaultIsTunnel = tunnelIndex <= lanIndex && tunnelIndex !== -1;
+
+            return resolve(defaultIsTunnel);
         });
     });
 }
