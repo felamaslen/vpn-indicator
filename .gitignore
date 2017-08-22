@@ -61,3 +61,8 @@ typings/
 .idea
 # Dependency directory
 bower_components
+
+# python
+**/__pycache__
+
+gtk-indicator/env
