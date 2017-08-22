@@ -10,15 +10,20 @@ The gateway has a special routing table (default: `vpndef1`) which routes reques
 
 The point of this app is to be an interface to a script which toggles this routing table.
 
-### Server setup
+---
+## Server setup
 
-#### Backend Routing
+### Backend Routing
 
 In this example, the server has interfaces:
-- LAN: `eth0` with IP `10.0.3.1/24` (v6: `2001:db8::1/48`)
-- VPN: `tun0` with IP `10.2.0.2/32` (v6: `2001:db8:200::1/128`) connected to remote `10.2.0.1/32` (v6: `2001:db8:200::2/128`)
+- LAN: `eth0` with
+    - IPv4: `10.0.3.1/24`
+    - IPv6: `2001:db8::1/48`
+- VPN: `tun0` with
+    - IPv4 `10.2.0.2/32` connected to remote `10.2.0.1/32`
+    - IPv6: `2001:db8:200::2/128` connected to remote `2001:db8:200::1/128`
 
-##### Linux
+#### Linux
 
 [**UNTESTED!**] To set up a routing table, put the correct values in `.env` (rename from `.env.example`) and run `setup_route_table.sh` as root.
 
@@ -29,47 +34,48 @@ What the script does is essentially:
 3. `# ip route add 10.0.3.0/24 via 10.0.3.1 table vpndef1` to allow local access
 4. Similar for IPv6 routes.
 
-##### Other operating systems
+#### Other operating systems
 
 None are supported as of yet. MacOS support may be added in future.
-
 You could probably get it to run quite easily on OpenBSD etc.
 
-#### Installation
+---
+### Installation
+Do this once the routing tables are all set up (see above).
 
 - Run `npm install` to install dependencies.
 
-#### Running
+### Running
 
 - Run `npm start` to start the web server. The port is set in the environment variables as `PORT`; the default is 8000.
 
-#### Development
+### Development
 
 - Run `npm run dev` to watch the server for changes.
-
 - Run `npm test` to test the server.
 
-### Client setup
+---
+## Client setup
 
-#### GTK indicator applet (Linux [Gnome / Unity etc.])
+### GTK indicator applet (Linux [Gnome / Unity etc.])
 
 This displays an indicator applet in the menu bar, indicating the status of the server's VPN routes (via the node web server) and allowing the user to toggle the status.
 
-##### Dependencies
+#### Dependencies
 
 - Python 3
 
-##### Configuration
+#### Configuration
 
 This is done with environment variables in `gtk-indicator/.env`, which you should rename from `gtk-indicator/.env.example` and edit with the correct values.
 
-##### Installation
+#### Installation
 
 Change directory to `./gtk-indicator`, and
 
 - Run `setup.sh` to install a python environment and further dependencies
 
-##### Running
+#### Running
 
 - Run `start.sh` to run the applet
 
