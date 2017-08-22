@@ -28,21 +28,20 @@ function isVPNDefaultGateway() {
     });
 }
 
-function statusRoute(req, res) {
-    isVPNDefaultGateway()
-        .then(status => {
-            res.end(status ? 'vpn' : 'novpn');
-        })
-        .catch(err => {
-            console.log('Error:', err);
-            res.end('error');
-        });
+function statusResult(gatewayStatus) {
+    return gatewayStatus
+        ? 'vpn'
+        : 'novpn';
 }
 
-function main() {
+function server() {
     const app = express();
 
-    app.get('/', statusRoute);
+    app.get('/', (req, res) => {
+        isVPNDefaultGateway()
+            .then(gatewayStatus => res.end(statusResult(gatewayStatus)))
+            .catch(() => res.status(500).end('server error'));
+    });
 
     const port = process.env.PORT || 8000;
     app.listen(port, () => {
@@ -50,5 +49,8 @@ function main() {
     });
 }
 
-main();
-
+module.exports = {
+    isVPNDefaultGateway,
+    statusResult,
+    server
+};
