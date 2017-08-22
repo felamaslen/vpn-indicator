@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# toggle IP rule to set the LAN's default gateway to the London PTP VPN link
+##
+## toggle IP rule to set the LAN's default gateway to the PTP VPN link
+##
+
 
 filedir=$(dirname $0)
 envfile="$filedir/.env"
@@ -14,11 +17,11 @@ rule4_def1="from $lan4_subnet table $table"
 rule6_def1="from $lan6_subnet table $table"
 ip="/sbin/ip"
 
-function enable_def1 {
+enable_def1() {
     $ip rule add $rule4_def1
     $ip -6 rule add $rule6_def1
 }
-function disable_def1 {
+disable_def1() {
     $ip rule del $rule4_def1
     $ip -6 rule del $rule6_def1
 }
