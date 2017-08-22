@@ -19,8 +19,8 @@ function getOS() {
 }
 
 function isVPNDefaultGatewayLinux() {
-    const vpnTable = 'vpndef1';
-    const subnetLan = '192.168.3.0/24';
+    const vpnTable = process.env.VPN_TABLE;
+    const subnetLan = process.env.SUBNET_LAN;
 
     return new Promise((resolve, reject) => {
         iprule.show((err, rules) => {
