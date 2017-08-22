@@ -7,6 +7,12 @@ describe('Server app', () => {
         app.isVPNDefaultGateway()
             .then(defaultIsTunnel => {
                 expect(defaultIsTunnel).to.be.oneOf([true, false]);
+            })
+            .catch(err => {
+                expect(err.message).to.be.oneOf([
+                    'MacOS not implemented yet on the server',
+                    'Unknown server operating system'
+                ]);
             });
     });
 
