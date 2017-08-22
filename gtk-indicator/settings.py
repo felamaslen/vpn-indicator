@@ -5,10 +5,10 @@ Main settings configuration
 
 import os
 from os.path import join, dirname
-from dotenv import load_dotenv
+from dotenv import Dotenv
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+dotenv = Dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+os.environ.update(dotenv)
 
 APPINDICATOR_ID = 'vpnindicator'
 
