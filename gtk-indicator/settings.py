@@ -17,3 +17,11 @@ SERVER_PORT = os.environ.get('SERVER_PORT')
 
 SERVER_URL = 'http://%s:%s' % (SERVER_IP, SERVER_PORT)
 
+SERVER_SSH = {
+        'ip': os.environ.get('SERVER_SSH_IP'),
+        'port': os.environ.get('SERVER_SSH_PORT'),
+        'key': os.environ.get('SERVER_SSH_KEY'),
+        'user': os.environ.get('SERVER_SSH_USER'),
+        'cmd': os.environ.get('SERVER_SSH_CMD')
+    }
+
