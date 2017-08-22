@@ -4,15 +4,21 @@
   "description": "Indicator server for VPN status",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/index.js",
+    "dev": "nodemon -w server server/index.js",
+    "test": "./node_modules/.bin/mocha --reporter spec --bail test/index.js"
   },
   "author": "Fela Maslen",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^4.0.0",
     "express": "^4.15.4",
-    "iproute": "^1.0.2"
+    "iproute": "^1.0.2",
+    "os": "^0.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0",
+    "nodemon": "^1.11.0"
   }
 }
