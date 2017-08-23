@@ -29,6 +29,7 @@ DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 ICON_SUCCESS = DIR_PATH + '/success.svg'
 ICON_FAIL = DIR_PATH + '/fail.svg'
 ICON_UNKNOWN = DIR_PATH + '/unknown.svg'
+ICON_PENDING = DIR_PATH + '/refresh.svg'
 
 STATUS_DISABLED = 0
 STATUS_ENABLED = 1
@@ -86,6 +87,8 @@ class VPNIndicatorApplet(object):
             return
 
         self.status_toggle = STATUS_PENDING
+
+        self.indicator.set_icon(ICON_PENDING)
 
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
