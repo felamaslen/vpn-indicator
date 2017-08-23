@@ -13,7 +13,7 @@ from threading import Timer
 import paramiko
 
 from settings import APPINDICATOR_ID, SERVER_IP, SERVER_URL, \
-        SERVER_SSH
+        SERVER_SSH, REQUEST_INTERVAL
 
 import gi
 
@@ -50,14 +50,11 @@ class VPNIndicatorApplet(object):
         self.indicator.set_icon(ICON_FAIL)
         self.indicator.set_menu(self.build_menu())
 
+        self.request_timer = None
+
         self.vpn_is_connected()
 
         gtk.main()
-
-    @staticmethod
-    def quit():
-        """ close the applet """
-        gtk.main_quit()
 
     @staticmethod
     def get_default_gateway():
@@ -76,7 +73,14 @@ class VPNIndicatorApplet(object):
         to the VPN """
         return str(VPNIndicatorApplet.get_default_gateway()) == SERVER_IP
 
-    def toggle_vpn_redirect(self):
+    def quit(self, source):
+        """ close the applet """
+        if self.request_timer is not None:
+            self.request_timer.cancel()
+
+        gtk.main_quit()
+
+    def toggle_vpn_redirect(self, source):
         """ run a command on the server """
         if self.status_toggle == STATUS_PENDING:
             return
@@ -107,7 +111,9 @@ class VPNIndicatorApplet(object):
             self.status_toggle = STATUS_ENABLED if response_string == 'vpn' \
                     else STATUS_DISABLED
 
-            icon = ICON_SUCCESS if self.status_toggle == STATUS_ENABLED else ICON_FAIL
+            icon = ICON_SUCCESS if self.status_toggle == STATUS_ENABLED \
+                    else ICON_FAIL
+
             self.indicator.set_icon(icon)
 
         except (socket.timeout, urllib.error.URLError, GatewayError):
@@ -117,8 +123,8 @@ class VPNIndicatorApplet(object):
 
             self.indicator.set_icon(ICON_UNKNOWN)
 
-        timer = Timer(5.0, self.vpn_is_connected)
-        timer.start()
+        self.request_timer = Timer(REQUEST_INTERVAL, self.vpn_is_connected)
+        self.request_timer.start()
 
     def build_menu(self):
         """ create a menu to display when the user clicks the applet """
@@ -128,7 +134,7 @@ class VPNIndicatorApplet(object):
         item_toggle.connect('activate', self.toggle_vpn_redirect)
 
         item_quit = gtk.MenuItem('Quit')
-        item_quit.connect('activate', VPNIndicatorApplet.quit)
+        item_quit.connect('activate', self.quit)
 
         menu.append(item_toggle)
         menu.append(item_quit)
