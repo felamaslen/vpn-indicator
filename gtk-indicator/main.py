@@ -5,40 +5,42 @@ Main app entry point
 """
 
 import os
-import socket
 import struct
+import signal
+import socket
+import urllib.request
+from threading import Timer
+import paramiko
+
+from settings import APPINDICATOR_ID, SERVER_IP, SERVER_URL, \
+        SERVER_SSH
 
 import gi
+
+# set gi gtk options
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
 
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 
-import signal
-from threading import Timer
-import urllib.request
-import socket
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
-import paramiko
-
-from settings import APPINDICATOR_ID, SERVER_IP, SERVER_URL, \
-        SERVER_SSH
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
-
-ICON_SUCCESS = dir_path + '/success.svg'
-ICON_FAIL = dir_path + '/fail.svg'
-ICON_UNKNOWN = dir_path + '/unknown.svg'
+ICON_SUCCESS = DIR_PATH + '/success.svg'
+ICON_FAIL = DIR_PATH + '/fail.svg'
+ICON_UNKNOWN = DIR_PATH + '/unknown.svg'
 
 STATUS_DISABLED = 0
 STATUS_ENABLED = 1
 STATUS_PENDING = 2
 
 class GatewayError(Exception):
+    """ custom exception to throw when we can't find the local
+    default gateway """
     pass
 
 class VPNIndicatorApplet(object):
+    """ wrapper class for the applet """
     def __init__(self):
         self.status_toggle = STATUS_PENDING
 
@@ -52,7 +54,13 @@ class VPNIndicatorApplet(object):
 
         gtk.main()
 
-    def get_default_gateway(self):
+    @staticmethod
+    def quit():
+        """ close the applet """
+        gtk.main_quit()
+
+    @staticmethod
+    def get_default_gateway():
         """ read the default gateway directly from /proc """
         with open('/proc/net/route') as handler:
             for line in handler:
@@ -62,9 +70,15 @@ class VPNIndicatorApplet(object):
 
                 return socket.inet_ntoa(struct.pack('<L', int(fields[2], 16)))
 
-    def toggle_default_gateway(self, source):
+    @staticmethod
+    def default_gateway_is_server():
+        """ the local default gateway must be the local server which connects
+        to the VPN """
+        return str(VPNIndicatorApplet.get_default_gateway()) == SERVER_IP
+
+    def toggle_default_gateway(self):
         """ run a command on the server """
-        if (self.status_toggle == STATUS_PENDING):
+        if self.status_toggle == STATUS_PENDING:
             return
 
         self.status_toggle = STATUS_PENDING
@@ -73,21 +87,16 @@ class VPNIndicatorApplet(object):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         pkey = paramiko.RSAKey.from_private_key_file(SERVER_SSH['key'])
 
-        ssh.connect(hostname = SERVER_SSH['ip'], username = SERVER_SSH['user'], \
-                pkey = pkey)
+        ssh.connect(hostname=SERVER_SSH['ip'], username=SERVER_SSH['user'], \
+                pkey=pkey)
 
-        stdin, stdout, stderr = ssh.exec_command(SERVER_SSH['cmd'])
-
-    def default_gateway_is_server(self):
-        """ the local default gateway must be the local server which connects
-        to the VPN """
-        return str(self.get_default_gateway()) == SERVER_IP
+        ssh.exec_command(SERVER_SSH['cmd'])
 
     def vpn_is_connected(self):
         """ contact the local server via its node express server
         and find out whether its default gateway is set to the VPN """
         try:
-            if not self.default_gateway_is_server():
+            if not VPNIndicatorApplet.default_gateway_is_server():
                 self.status_toggle = STATUS_PENDING
                 raise GatewayError()
 
@@ -112,13 +121,14 @@ class VPNIndicatorApplet(object):
         timer.start()
 
     def build_menu(self):
+        """ create a menu to display when the user clicks the applet """
         menu = gtk.Menu()
 
         item_toggle = gtk.MenuItem('Toggle')
         item_toggle.connect('activate', self.toggle_default_gateway)
 
         item_quit = gtk.MenuItem('Quit')
-        item_quit.connect('activate', self.quit)
+        item_quit.connect('activate', VPNIndicatorApplet.quit)
 
         menu.append(item_toggle)
         menu.append(item_quit)
@@ -127,15 +137,12 @@ class VPNIndicatorApplet(object):
 
         return menu
 
-    def quit(self, source):
-        gtk.main_quit()
-
 
 def main():
     """ main entry point """
     signal.signal(signal.SIGINT, signal.SIG_DFL) # allow ctrl+c to quit
 
-    applet = VPNIndicatorApplet()
+    VPNIndicatorApplet()
 
 if __name__ == "__main__":
     main()
