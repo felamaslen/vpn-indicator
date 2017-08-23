@@ -46,6 +46,7 @@ async function isVPNDefaultGateway() {
 
     if (platform === 'linux') {
         const gatewayStatus = await isVPNDefaultGatewayLinux();
+
         return gatewayStatus;
     }
 
@@ -67,6 +68,7 @@ async function route(req, res) {
         const gatewayStatus = await isVPNDefaultGateway();
 
         const result = statusResult(gatewayStatus);
+
         return res.end(result);
     }
     catch (err) {
@@ -80,13 +82,18 @@ function server() {
     app.get('/', route);
 
     const port = process.env.PORT || 8000;
-    app.listen(port, () => {
-        console.log('Listening on port', port);
+
+    return new Promise(resolve => {
+        app.listen(port, () => {
+            resolve({ app, port });
+        });
     });
 }
 
 module.exports = {
+    getOS,
     isVPNDefaultGateway,
     statusResult,
+    route,
     server
 };
