@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon -w server server/index.js",
-    "test": "./node_modules/.bin/mocha --reporter spec --bail test/index.js"
+    "test": "./node_modules/.bin/mocha --reporter spec --bail test/index.js",
+    "lint": "./node_modules/.bin/eslint server"
   },
   "author": "Fela Maslen",
   "license": "MIT",
@@ -17,7 +18,10 @@
     "os": "^0.1.1"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "chai": "^4.1.1",
+    "eslint": "^4.5.0",
+    "eslint-plugin-mocha": "^4.11.0",
     "mocha": "^3.5.0",
     "nodemon": "^1.11.0"
   }
