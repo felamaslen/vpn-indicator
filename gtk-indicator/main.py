@@ -76,7 +76,7 @@ class VPNIndicatorApplet(object):
         to the VPN """
         return str(VPNIndicatorApplet.get_default_gateway()) == SERVER_IP
 
-    def toggle_default_gateway(self):
+    def toggle_vpn_redirect(self):
         """ run a command on the server """
         if self.status_toggle == STATUS_PENDING:
             return
@@ -125,7 +125,7 @@ class VPNIndicatorApplet(object):
         menu = gtk.Menu()
 
         item_toggle = gtk.MenuItem('Toggle')
-        item_toggle.connect('activate', self.toggle_default_gateway)
+        item_toggle.connect('activate', self.toggle_vpn_redirect)
 
         item_quit = gtk.MenuItem('Quit')
         item_quit.connect('activate', VPNIndicatorApplet.quit)
