@@ -8,7 +8,7 @@ class TestReq {
 class TestRes {
     constructor() {
         this.status = 200;
-        this.body= null;
+        this.body = null;
     }
     status(code) {
         this.status = code;

@@ -7,7 +7,7 @@
     "start": "node server/index.js",
     "dev": "nodemon -w server server/index.js",
     "test": "./node_modules/.bin/mocha --reporter spec --bail test/index.js",
-    "lint": "./node_modules/.bin/eslint server"
+    "lint": "./node_modules/.bin/eslint server test"
   },
   "author": "Fela Maslen",
   "license": "MIT",
