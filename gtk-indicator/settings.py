@@ -25,3 +25,5 @@ SERVER_SSH = {
         'cmd': os.environ.get('SERVER_SSH_CMD')
     }
 
+REQUEST_INTERVAL = 5.0
+
