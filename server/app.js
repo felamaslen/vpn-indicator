@@ -1,7 +1,8 @@
 const os = require('os');
 const exec = require('child_process').exec;
-const express = require('express');
 const iprule = require('iproute').rule;
+const express = require('express');
+const basicAuth = require('express-basic-auth');
 
 require('dotenv').config();
 const config = require('./config')();
@@ -96,9 +97,18 @@ function toggleRoute(req, res) {
 function server() {
     const app = express();
 
-    app.get('/', statusRoute);
+    app.get('/status', statusRoute);
 
-    app.put('/toggle', toggleRoute);
+    app.use('/api', basicAuth({
+        users: { [config.webUsername]: config.webPassword },
+        challenge: true,
+        realm: 'vpnIndicator99svv912'
+    }));
+
+    app.put('/api/toggle', toggleRoute);
+
+    // catch 404 errors
+    app.use((req, res) => res.status(404).end('not found'));
 
     const port = process.env.PORT || 8000;
 
