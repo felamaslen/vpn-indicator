@@ -5,93 +5,150 @@ Main app entry point
 """
 
 import os
-import socket
 import struct
+import signal
+import socket
+import urllib.request
+from threading import Timer
+import paramiko
+
+from settings import APPINDICATOR_ID, SERVER_IP, SERVER_URL, \
+        SERVER_SSH, REQUEST_INTERVAL
 
 import gi
+
+# set gi gtk options
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
 
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 
-import signal
-from threading import Timer
-import urllib.request
-import socket
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
-from settings import APPINDICATOR_ID, SERVER_IP, SERVER_URL
+ICON_SUCCESS = DIR_PATH + '/success.svg'
+ICON_FAIL = DIR_PATH + '/fail.svg'
+ICON_UNKNOWN = DIR_PATH + '/unknown.svg'
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-icon_success = dir_path + '/success.svg'
-icon_fail = dir_path + '/fail.svg'
-icon_unknown = dir_path + '/unknown.svg'
-
-def get_default_gateway():
-    """ read the default gateway directly from /proc """
-    with open('/proc/net/route') as handler:
-        for line in handler:
-            fields = line.strip().split()
-            if fields[1] != '00000000' or not int(fields[3], 16) & 2:
-                continue
-
-            return socket.inet_ntoa(struct.pack('<L', int(fields[2], 16)))
-
-def default_gateway_is_server():
-    """ the local default gateway must be the local server which connects
-    to the VPN """
-    return str(get_default_gateway()) == SERVER_IP
+STATUS_DISABLED = 0
+STATUS_ENABLED = 1
+STATUS_PENDING = 2
 
 class GatewayError(Exception):
+    """ custom exception to throw when we can't find the local
+    default gateway """
     pass
 
-def vpn_is_connected(indicator):
-    """ contact the local server via its node express server
-    and find out whether its default gateway is set to the VPN """
-    try:
-        if not default_gateway_is_server():
-            raise GatewayError()
+class VPNIndicatorApplet(object):
+    """ wrapper class for the applet """
+    def __init__(self):
+        self.status_toggle = STATUS_PENDING
 
-        response = urllib.request.urlopen(SERVER_URL, timeout=1)
+        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, \
+                'ldnvpnind', appindicator.IndicatorCategory.SYSTEM_SERVICES)
+        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+        self.indicator.set_icon(ICON_FAIL)
+        self.indicator.set_menu(self.build_menu())
 
-        response_string = response.read().decode('utf-8')
+        self.request_timer = None
 
-        status_connected = response_string == 'vpn'
+        self.vpn_is_connected()
 
-        indicator.set_icon(icon_success if status_connected else icon_fail)
+        gtk.main()
 
-    except (socket.timeout, urllib.error.URLError, GatewayError):
-        # some error occurred with the request
-        # try again after changing the icon to unknown
-        indicator.set_icon(icon_unknown)
+    @staticmethod
+    def get_default_gateway():
+        """ read the default gateway directly from /proc """
+        with open('/proc/net/route') as handler:
+            for line in handler:
+                fields = line.strip().split()
+                if fields[1] != '00000000' or not int(fields[3], 16) & 2:
+                    continue
 
-    timer = Timer(5.0, vpn_is_connected, [indicator])
-    timer.start()
+                return socket.inet_ntoa(struct.pack('<L', int(fields[2], 16)))
 
-def build_menu():
-    menu = gtk.Menu()
-    item_quit = gtk.MenuItem('Quit')
-    item_quit.connect('activate', quit)
-    menu.append(item_quit)
-    menu.show_all()
-    return menu
+    @staticmethod
+    def default_gateway_is_server():
+        """ the local default gateway must be the local server which connects
+        to the VPN """
+        return str(VPNIndicatorApplet.get_default_gateway()) == SERVER_IP
 
-def quit(source):
-    gtk.main_quit()
+    def quit(self, source):
+        """ close the applet """
+        if self.request_timer is not None:
+            self.request_timer.cancel()
+
+        gtk.main_quit()
+
+    def toggle_vpn_redirect(self, source):
+        """ run a command on the server """
+        if self.status_toggle == STATUS_PENDING:
+            return
+
+        self.status_toggle = STATUS_PENDING
+
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        pkey = paramiko.RSAKey.from_private_key_file(SERVER_SSH['key'])
+
+        ssh.connect(hostname=SERVER_SSH['ip'], username=SERVER_SSH['user'], \
+                pkey=pkey)
+
+        ssh.exec_command(SERVER_SSH['cmd'])
+
+    def vpn_is_connected(self):
+        """ contact the local server via its node express server
+        and find out whether its default gateway is set to the VPN """
+        try:
+            if not VPNIndicatorApplet.default_gateway_is_server():
+                self.status_toggle = STATUS_PENDING
+                raise GatewayError()
+
+            response = urllib.request.urlopen(SERVER_URL, timeout=1)
+
+            response_string = response.read().decode('utf-8')
+
+            self.status_toggle = STATUS_ENABLED if response_string == 'vpn' \
+                    else STATUS_DISABLED
+
+            icon = ICON_SUCCESS if self.status_toggle == STATUS_ENABLED \
+                    else ICON_FAIL
+
+            self.indicator.set_icon(icon)
+
+        except (socket.timeout, urllib.error.URLError, GatewayError):
+            # some error occurred with the request
+            # try again after changing the icon to unknown
+            self.status_toggle = STATUS_PENDING
+
+            self.indicator.set_icon(ICON_UNKNOWN)
+
+        self.request_timer = Timer(REQUEST_INTERVAL, self.vpn_is_connected)
+        self.request_timer.start()
+
+    def build_menu(self):
+        """ create a menu to display when the user clicks the applet """
+        menu = gtk.Menu()
+
+        item_toggle = gtk.MenuItem('Toggle')
+        item_toggle.connect('activate', self.toggle_vpn_redirect)
+
+        item_quit = gtk.MenuItem('Quit')
+        item_quit.connect('activate', self.quit)
+
+        menu.append(item_toggle)
+        menu.append(item_quit)
+
+        menu.show_all()
+
+        return menu
+
 
 def main():
     """ main entry point """
     signal.signal(signal.SIGINT, signal.SIG_DFL) # allow ctrl+c to quit
 
-    indicator = appindicator.Indicator.new(APPINDICATOR_ID, 'ldnvpnind', \
-            appindicator.IndicatorCategory.SYSTEM_SERVICES)
-    indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-    indicator.set_icon(icon_unknown)
-    indicator.set_menu(build_menu())
-
-    vpn_is_connected(indicator)
-
-    gtk.main()
+    VPNIndicatorApplet()
 
 if __name__ == "__main__":
     main()
