@@ -3,6 +3,7 @@ const express = require('express');
 const iprule = require('iproute').rule;
 
 require('dotenv').config();
+const config = require('./config')();
 
 function getOS() {
     const platform = os.platform();
@@ -19,9 +20,6 @@ function getOS() {
 }
 
 function isVPNDefaultGatewayLinux() {
-    const vpnTable = process.env.VPN_TABLE;
-    const subnetLan = process.env.SUBNET_LAN;
-
     return new Promise((resolve, reject) => {
         iprule.show((err, rules) => {
             if (err) {
@@ -29,11 +27,11 @@ function isVPNDefaultGatewayLinux() {
             }
 
             const tunnelIndex = rules.findIndex(
-                rule => rule.from === subnetLan && rule.lookup === vpnTable
+                rule => rule.from === config.subnetLan && rule.lookup === config.vpnTable
             );
 
             const lanIndex = rules.findIndex(
-                rule => rule.from === subnetLan
+                rule => rule.from === config.subnetLan
             );
 
             const defaultIsTunnel = tunnelIndex <= lanIndex && tunnelIndex !== -1;
@@ -44,14 +42,14 @@ function isVPNDefaultGatewayLinux() {
 }
 
 async function isVPNDefaultGateway() {
-    const os = await getOS();
+    const platform = await getOS();
 
-    if (os === 'linux') {
+    if (platform === 'linux') {
         const gatewayStatus = await isVPNDefaultGatewayLinux();
         return gatewayStatus;
     }
 
-    if (os === 'mac') {
+    if (platform === 'mac') {
         throw new Error('MacOS not implemented yet on the server');
     }
 
