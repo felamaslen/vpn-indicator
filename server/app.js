@@ -1,4 +1,5 @@
 const os = require('os');
+const exec = require('child_process').exec;
 const express = require('express');
 const iprule = require('iproute').rule;
 
@@ -63,7 +64,7 @@ function statusResult(gatewayStatus) {
         : 'novpn';
 }
 
-async function route(req, res) {
+async function statusRoute(req, res) {
     try {
         const gatewayStatus = await isVPNDefaultGateway();
 
@@ -76,10 +77,28 @@ async function route(req, res) {
     }
 }
 
+function toggleRoute(req, res) {
+    return new Promise((resolve, reject) => {
+        exec(config.toggleCmd, (err, stdout) => {
+            if (err) {
+                reject(res.status(500).end(err.message));
+            }
+
+            const newStatus = stdout.match(/^Enabling/)
+                ? 'vpn'
+                : 'novpn';
+
+            resolve(res.end(newStatus));
+        });
+    });
+}
+
 function server() {
     const app = express();
 
-    app.get('/', route);
+    app.get('/', statusRoute);
+
+    app.put('/toggle', toggleRoute);
 
     const port = process.env.PORT || 8000;
 
@@ -94,6 +113,7 @@ module.exports = {
     getOS,
     isVPNDefaultGateway,
     statusResult,
-    route,
+    statusRoute,
+    toggleRoute,
     server
 };

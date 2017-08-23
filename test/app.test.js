@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-expressions */
 const expect = require('chai').expect;
 
+process.env.PORT = 8001;
+
 const app = require('../server/app');
 
 class TestReq {
@@ -56,7 +58,7 @@ describe('Server app', () => {
     });
 
     it('should expose a route with the VPN status', async() => {
-        const res = await app.route(new TestReq(), new TestRes());
+        const res = await app.statusRoute(new TestReq(), new TestRes());
 
         if (res.status === 200) {
             expect(res.body).to.be.oneOf(['vpn', 'novpn']);
@@ -65,6 +67,13 @@ describe('Server app', () => {
             expect(res.status).to.be.equal(500);
             expect(res.body).to.be.oneOf(serverPlatformErrorMessages);
         }
+    });
+
+    it('should expose a route to toggle the VPN status', async() => {
+        const res = await app.toggleRoute(new TestReq(), new TestRes());
+
+        expect(res.status).to.be.equal(200);
+        expect(res.body).to.be.oneOf(['vpn', 'novpn']);
     });
 
     it('should run a web server', async () => {
