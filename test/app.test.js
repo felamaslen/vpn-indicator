@@ -9,11 +9,11 @@ class TestReq {
 }
 class TestRes {
     constructor() {
-        this.status = 200;
+        this.statusCode = 200;
         this.body = null;
     }
     status(code) {
-        this.status = code;
+        this.statusCode = code;
 
         return this;
     }
@@ -60,11 +60,11 @@ describe('Server app', () => {
     it('should expose a route with the VPN status', async() => {
         const res = await app.statusRoute(new TestReq(), new TestRes());
 
-        if (res.status === 200) {
+        if (res.statusCode === 200) {
             expect(res.body).to.be.oneOf(['vpn', 'novpn']);
         }
         else {
-            expect(res.status).to.be.equal(500);
+            expect(res.statusCode).to.be.equal(500);
             expect(res.body).to.be.oneOf(serverPlatformErrorMessages);
         }
     });
@@ -72,7 +72,7 @@ describe('Server app', () => {
     it('should expose a route to toggle the VPN status', async() => {
         const res = await app.toggleRoute(new TestReq(), new TestRes());
 
-        expect(res.status).to.be.equal(200);
+        expect(res.statusCode).to.be.equal(200);
         expect(res.body).to.be.oneOf(['vpn', 'novpn']);
     });
 
