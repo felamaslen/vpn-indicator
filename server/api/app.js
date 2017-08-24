@@ -1,6 +1,7 @@
 const os = require('os');
 const exec = require('child_process').exec;
 const iprule = require('iproute').rule;
+const path = require('path');
 const express = require('express');
 const basicAuth = require('express-basic-auth');
 
@@ -98,6 +99,9 @@ function server() {
     const app = express();
 
     app.get('/status', statusRoute);
+
+    // serve the web UI at /
+    app.use(express.static(path.join(__dirname, '../static')));
 
     app.use('/api', basicAuth({
         users: { [config.webUsername]: config.webPassword },
