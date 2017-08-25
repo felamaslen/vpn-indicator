@@ -11,6 +11,7 @@
         "plugin:react/recommended"
     ],
     "parserOptions": {
+        "ecmaVersion": 8,
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
             "jsx": true,
@@ -42,7 +43,6 @@
         ],
         "block-scoped-var": "error",
         "block-spacing": "error",
-        "brace-style": "error",
         "callback-return": "error",
         "camelcase": "error",
         "capitalized-comments": "off",
@@ -131,6 +131,7 @@
         "no-caller": "error",
         "no-catch-shadow": "error",
         "no-confusing-arrow": "error",
+        "no-console": 0,
         "no-continue": "error",
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
@@ -194,7 +195,6 @@
         "no-sync": "error",
         "no-tabs": "error",
         "no-template-curly-in-string": "error",
-        "no-ternary": "error",
         "no-throw-literal": "error",
         "no-trailing-spaces": "error",
         "no-undef-init": "error",

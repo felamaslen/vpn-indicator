@@ -1,7 +1,8 @@
 import { formatVPNStatus } from '../lang';
 
 export function requestVPNStatus(reduction) {
-    return reduction; // TODO
+    // TODO: side effect for requesting VPN status
+    return reduction;
 }
 
 export function handleVPNStatus(reduction, status) {
