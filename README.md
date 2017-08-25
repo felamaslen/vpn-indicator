@@ -75,6 +75,8 @@ This displays an indicator applet in the menu bar, indicating the status of the 
 #### Dependencies
 
 - Python 3
+- Virtualenv
+    - On Ubuntu: `sudo apt install python3-virtualenv virtualenv`
 
 #### Configuration
 
