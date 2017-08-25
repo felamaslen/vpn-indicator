@@ -18,6 +18,17 @@ class App extends Component {
     toggleState() {
         vpnStatusToggled()(this.props.dispatch);
     }
+    componentDidMount() {
+        this.checkState();
+    }
+    componentWillUpdate(nextProps) {
+        // periodically check the VPN status
+        if (this.props.loading && !nextProps.loading) {
+            setTimeout(() => {
+                this.checkState();
+            }, this.props.checkTimeout);
+        }
+    }
     render() {
         return (
             <div className="app-container">
@@ -35,7 +46,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-    loading: PropTypes.bool,
+    loading: PropTypes.bool.isRequired,
+    checkTimeout: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     vpnStatusText: PropTypes.string.isRequired
 };
@@ -43,6 +55,7 @@ App.propTypes = {
 function mapStateToProps(reduction, ownProps) {
     return {
         loading: reduction.getIn(['appState', 'loading']),
+        checkTimeout: reduction.getIn(['appState', 'checkTimeout']),
         vpnStatusText: reduction.getIn(['appState', 'vpnStatusText'])
     };
 }
