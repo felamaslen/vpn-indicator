@@ -5,8 +5,10 @@ const path = require('path');
 const express = require('express');
 const basicAuth = require('express-basic-auth');
 
+// dotenv is NOT loaded in config, since it's common to both
+// the backend and webui
 require('dotenv').config();
-const config = require('./config')();
+const config = require('../config')();
 
 function getOS() {
     const platform = os.platform();

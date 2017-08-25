@@ -1,3 +1,6 @@
-require('./config.test');
-require('./app.test');
+require('./api.config.spec');
+require('./api.spec');
+
+// require('./helpers/browser');
+// require('./ui.spec');
 

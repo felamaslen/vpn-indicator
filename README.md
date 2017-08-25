@@ -63,6 +63,7 @@ You can then access the web UI at `http://localhost:8000`. The authentication is
 - Run `npm run dev:ui` to run a hot-reload webpack-dev-server on top of this for the web UI. This can be accessed by default at `http://localhost:8001` (the port is set to the environment variable PORT_WDS).
 
 - Run `npm test` to test the server.
+- Run `npm run test:ui` to test the web app.
 
 ---
 ## Client setup

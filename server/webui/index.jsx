@@ -7,6 +7,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { StaticRouter, Route, Switch } from 'react-router-dom';
 
+import getConfig from '../config';
+const config = getConfig().webui;
+
 // all styles imported here
 import './sass/index.scss';
 
@@ -28,7 +31,7 @@ const switchRoutes = routes.map((route, index) => {
 
 ReactDOM.render(
     <div>
-        <Header />
+        <Header title={config.title} />
         <Provider store={getStore()}>
             <StaticRouter location={window.location.pathname} context={context}>
                 <Switch>
