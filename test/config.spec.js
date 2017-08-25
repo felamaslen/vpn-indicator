@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-require('dotenv')();
+require('dotenv').config();
 const config = require('../server/config')();
 
 describe('Configuration', () => {
