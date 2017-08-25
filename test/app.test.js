@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 
 process.env.PORT = 8001;
 
-const app = require('../server/app');
+const app = require('../server/api/app');
 
 class TestReq {
 }

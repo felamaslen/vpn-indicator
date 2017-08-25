@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const config = require('../server/config')();
+const config = require('../server/api/config')();
 
 describe('Configuration', () => {
     it('should be an object', () => {
