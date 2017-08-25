@@ -9,7 +9,11 @@ import {
     vpnStatusToggled
 } from '../actions/app.actions';
 
+import Header from '../components/Header';
 import CurrentStatus from '../components/CurrentStatus';
+
+import getConfig from '../../config';
+const config = getConfig().webui;
 
 class App extends Component {
     checkState() {
@@ -31,8 +35,9 @@ class App extends Component {
     }
     render() {
         return (
-            <div className="app-container">
-                <div className="current-status">
+            <div className="container">
+                <Header title={config.title} />
+                <div className="main">
                     <CurrentStatus
                         statusText={this.props.vpnStatusText}
                         loading={this.props.loading}

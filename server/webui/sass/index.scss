@@ -15,6 +15,7 @@
     display: block;
     position: relative;
     text-indent: -9999px;
+    margin: 0 auto;
 
     &:before {
         content: "";
@@ -31,3 +32,11 @@
         animation: linear infinite 1s spin;
     }
 }
+
+.main {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
+}
+
