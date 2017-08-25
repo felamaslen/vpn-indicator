@@ -9,7 +9,7 @@
     "dev:srv": "NODE_ENV=dev nodemon -w ./server/api ./server/api/index.js",
     "dev:ui": "NODE_ENV=dev ./node_modules/.bin/webpack-dev-server",
     "test": "./node_modules/.bin/mocha --reporter spec --bail test/index.js",
-    "test:ui": "./node_modules/.bin/mocha test/ui/index.js",
+    "test:ui": "./node_modules/.bin/mocha -w test/ui/index.js",
     "lint": "./node_modules/.bin/eslint server/api server/webui test"
   },
   "author": "Fela Maslen",
