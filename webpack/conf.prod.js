@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const moduleConfig = require('./module.common');
 const plugins = require('./plugin.common');
@@ -34,6 +35,10 @@ module.exports = {
             mangle: {
                 toplevel: true
             }
+        }),
+        new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.css$/,
+            cssProcessorOptions: { discardComments: { removeAll: true } }
         })
     ]),
     module: moduleConfig,
