@@ -105,18 +105,39 @@ function authMiddleware() {
         unauthorizedResponse: '<h1>Unauthorised</h1>'
     });
 }
+function setAuth(app) {
+    app.use(authMiddleware());
+}
+
+function setViews(app) {
+    // view template(s)
+    app.set('views', path.join(__dirname, '../webui/templates'));
+    app.set('view engine', 'ejs');
+
+    app.get('/', (req, res) => {
+        return res.render('index', {
+            title: config.webui.title
+        });
+    });
+
+    // serve the web UI at /
+    app.use(express.static(path.join(__dirname, '../static')));
+}
+
+function setApiMethods(app) {
+    app.put('/api/toggle', toggleRoute);
+}
 
 function server() {
     const app = express();
 
     app.get('/status', statusRoute);
 
-    app.use(authMiddleware());
+    setAuth(app);
 
-    // serve the web UI at /
-    app.use(express.static(path.join(__dirname, '../static')));
+    setViews(app);
 
-    app.put('/api/toggle', toggleRoute);
+    setApiMethods(app);
 
     // catch 404 errors
     app.use((req, res) => res.status(404).end('not found'));
