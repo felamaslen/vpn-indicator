@@ -1,5 +1,7 @@
 const expect = require('chai').expect;
-const config = require('../server/api/config')();
+
+require('dotenv')();
+const config = require('../server/config')();
 
 describe('Configuration', () => {
     it('should be an object', () => {
