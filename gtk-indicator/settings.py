@@ -15,7 +15,7 @@ APPINDICATOR_ID = 'vpnindicator'
 SERVER_IP = os.environ.get('SERVER_IP')
 SERVER_PORT = os.environ.get('SERVER_PORT')
 
-SERVER_URL = 'http://%s:%s' % (SERVER_IP, SERVER_PORT)
+SERVER_URL = 'http://%s:%s/status' % (SERVER_IP, SERVER_PORT)
 
 SERVER_SSH = {
         'ip': os.environ.get('SERVER_SSH_IP'),

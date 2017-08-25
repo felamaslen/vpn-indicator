@@ -1,2 +1,3 @@
-require('./app.test');
+require('./config.spec');
+require('./api.spec');
 
