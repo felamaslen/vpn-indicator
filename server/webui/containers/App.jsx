@@ -35,6 +35,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+    loading: PropTypes.bool,
     dispatch: PropTypes.func.isRequired,
     vpnStatusText: PropTypes.string.isRequired
 };

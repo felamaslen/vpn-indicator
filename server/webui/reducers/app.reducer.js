@@ -22,6 +22,7 @@ function getVPNStatusText(appState, status) {
 
 export function handleVPNStatus(appState, status) {
     return appState
-        .set('vpnStatusText', getVPNStatusText(appState, status));
+        .set('vpnStatusText', getVPNStatusText(appState, status))
+        .set('loading', false);
 }
 

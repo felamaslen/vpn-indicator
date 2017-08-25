@@ -22,7 +22,7 @@ class CurrentStatus extends Component {
 }
 
 CurrentStatus.propTypes = {
-    loading: PropTypes.boolean,
+    loading: PropTypes.bool,
     statusText: PropTypes.string
 };
 

@@ -2,11 +2,13 @@ import { createReducer } from 'redux-create-reducer';
 
 import {
     VPN_STATUS_REQUESTED,
+    VPN_STATUS_TOGGLED,
     VPN_STATUS_RECEIVED
 } from '../actions';
 
 import {
     requestVPNStatus,
+    toggleVPNStatus,
     handleVPNStatus
 } from './app.reducer';
 
@@ -23,6 +25,7 @@ function createReducerObject(array) {
 // map actions to reducers
 const reducers = createReducerObject([
     [VPN_STATUS_REQUESTED, requestVPNStatus],
+    [VPN_STATUS_TOGGLED, toggleVPNStatus],
     [VPN_STATUS_RECEIVED, handleVPNStatus]
 ]);
 

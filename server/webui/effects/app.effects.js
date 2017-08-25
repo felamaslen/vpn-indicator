@@ -5,13 +5,13 @@ import {
     VPN_STATUS_RECEIVED
 } from '../actions';
 
-export function getVPNStatus() {
+function respondToServerStatus(request, type) {
     return async dispatch => {
         // contact the api
         try {
-            const result = await axios.get('/status');
+            const result = await axios[type](request);
 
-            const vpnEnabled = result === 'vpn';
+            const vpnEnabled = result.data === 'vpn';
 
             return dispatch(buildMessage(VPN_STATUS_RECEIVED, vpnEnabled));
         }
@@ -24,5 +24,11 @@ export function getVPNStatus() {
             return dispatch(buildMessage(VPN_STATUS_RECEIVED, null));
         }
     };
+}
+export function getVPNStatus() {
+    return respondToServerStatus('/status', 'get');
+}
+export function toggleVPNStatus() {
+    return respondToServerStatus('/api/toggle', 'put');
 }
 

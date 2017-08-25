@@ -4,6 +4,7 @@ import appState from '../../server/webui/lib/reduction';
 
 import {
     requestVPNStatus,
+    toggleVPNStatus,
     handleVPNStatus
 } from '../../server/webui/reducers/app.reducer';
 
