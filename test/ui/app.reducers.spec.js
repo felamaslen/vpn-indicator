@@ -1,27 +1,47 @@
 import { expect } from 'chai';
-import initialReduction from '../../server/webui/lib/reduction';
+import itEach from 'it-each';
+import appState from '../../server/webui/lib/reduction';
 
 import {
     requestVPNStatus,
     handleVPNStatus
 } from '../../server/webui/reducers/app.reducer';
 
+import enGB from '../../server/webui/lang/en_GB.json';
+import zhCN from '../../server/webui/lang/zh_CN.json';
+
+const localisation = { enGB, zhCN };
+
+itEach({ testPerIteration: true });
+
 describe('App', () => {
     describe('reducers', () => {
         describe('requestVPNStatus', () => {
             it('should do nothing', () => {
-                expect(requestVPNStatus(initialReduction)).to.be.equal(initialReduction);
+                expect(requestVPNStatus(appState)).to.be.equal(appState);
             });
         });
 
         describe('handleVPNStatus', () => {
-            it('should set vpnStatusText to something', () => {
-                const statusText = [true, false, null].map(status => handleVPNStatus(initialReduction, status));
+            it.each(
+                [
+                    { lang: 'enGB' },
+                    { lang: 'zhCN' }
+                ],
+                'should set vpnStatusText localised to %s',
+                ['lang'],
+                lang => {
+                    const appStateLocalised = appState.set('lang', localisation[lang]);
 
-                expect(statusText[0].get('vpnStatusText')).to.be.a('string').lengthOf.greaterThan(0);
-                expect(statusText[1].get('vpnStatusText')).to.be.a('string').lengthOf.greaterThan(0);
-                expect(statusText[2].get('vpnStatusText')).to.be.a('string').lengthOf.greaterThan(0);
-            });
+                    const statusText = [true, false, null].map(
+                        status => handleVPNStatus(appStateLocalised, status)
+                    );
+
+                    expect(statusText[0].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_ON);
+                    expect(statusText[1].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_OFF);
+                    expect(statusText[2].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_UNKNOWN);
+                }
+            );
         });
     });
 });
