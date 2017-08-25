@@ -9,10 +9,16 @@
     }
 }
 
+.toggle-btn {
+    margin: 0.5em auto;
+    display: block;
+}
+
 .loading-spinner {
     width: 32px;
     height: 32px;
-    display: block;
+    display: inline-block;
+    vertical-align: middle;
     position: relative;
     text-indent: -9999px;
     margin: 0 auto;
@@ -34,7 +40,7 @@
 }
 
 .main {
-    padding: 3rem 1.5rem;
+    margin: 3rem 1.5rem;
     text-align: center;
     height: 100px;
     line-height: 100px;
