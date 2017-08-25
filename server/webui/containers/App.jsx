@@ -43,7 +43,10 @@ class App extends Component {
                         loading={this.props.loading}
                     />
                 </div>
-                <button onClick={() => this.toggleState()}>Toggle</button>
+                <button
+                    type="button"
+                    className="btn btn-primary toggle-btn"
+                    onClick={() => this.toggleState()}>Toggle</button>
             </div>
         );
     }
