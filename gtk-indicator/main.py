@@ -8,12 +8,12 @@ import os
 import struct
 import signal
 import socket
-import urllib.request
+import requests
 from threading import Timer
-import paramiko
 
 from settings import APPINDICATOR_ID, SERVER_IP, SERVER_URL, \
-        SERVER_SSH, REQUEST_INTERVAL
+        SERVER_AUTH_USERNAME, SERVER_AUTH_PASSWORD, \
+        REQUEST_INTERVAL, HTTP_TIMEOUT
 
 import gi
 
@@ -81,6 +81,17 @@ class VPNIndicatorApplet(object):
 
         gtk.main_quit()
 
+    def set_new_status(self, response):
+        response_string = response.text
+
+        self.status_toggle = STATUS_ENABLED if response_string == 'vpn' \
+                else STATUS_DISABLED
+
+        icon = ICON_SUCCESS if self.status_toggle == STATUS_ENABLED \
+                else ICON_FAIL
+
+        self.indicator.set_icon(icon)
+
     def toggle_vpn_redirect(self, source):
         """ run a command on the server """
         if self.status_toggle == STATUS_PENDING:
@@ -90,40 +101,40 @@ class VPNIndicatorApplet(object):
 
         self.indicator.set_icon(ICON_PENDING)
 
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        pkey = paramiko.RSAKey.from_private_key_file(SERVER_SSH['key'])
+        try:
+            response = requests.put('{}/api/toggle'.format(SERVER_URL), timeout=HTTP_TIMEOUT, \
+                    auth=(SERVER_AUTH_USERNAME, SERVER_AUTH_PASSWORD))
+            response.raise_for_status()
 
-        ssh.connect(hostname=SERVER_SSH['ip'], username=SERVER_SSH['user'], \
-                pkey=pkey)
+            self.set_new_status(response)
 
-        ssh.exec_command(SERVER_SSH['cmd'])
+        except (requests.exceptions.RequestException):
+            # some error occurred with the request
+            self.indicator.set_icon(ICON_UNKNOWN)
+
+            return
 
     def vpn_is_connected(self):
         """ contact the local server via its node express server
         and find out whether its default gateway is set to the VPN """
+
+        if self.request_timer is not None:
+            self.request_timer.cancel()
+
         try:
             if not VPNIndicatorApplet.default_gateway_is_server():
                 self.status_toggle = STATUS_PENDING
                 raise GatewayError()
 
-            response = urllib.request.urlopen(SERVER_URL, timeout=1)
+            response = requests.get('{}/status'.format(SERVER_URL), timeout=HTTP_TIMEOUT)
+            response.raise_for_status()
 
-            response_string = response.read().decode('utf-8')
+            self.set_new_status(response)
 
-            self.status_toggle = STATUS_ENABLED if response_string == 'vpn' \
-                    else STATUS_DISABLED
-
-            icon = ICON_SUCCESS if self.status_toggle == STATUS_ENABLED \
-                    else ICON_FAIL
-
-            self.indicator.set_icon(icon)
-
-        except (socket.timeout, urllib.error.URLError, GatewayError):
+        except (requests.exceptions.RequestException, GatewayError):
             # some error occurred with the request
             # try again after changing the icon to unknown
             self.status_toggle = STATUS_PENDING
-
             self.indicator.set_icon(ICON_UNKNOWN)
 
         self.request_timer = Timer(REQUEST_INTERVAL, self.vpn_is_connected)
