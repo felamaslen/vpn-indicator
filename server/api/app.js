@@ -97,19 +97,24 @@ function toggleRoute(req, res) {
     });
 }
 
+function authMiddleware() {
+    return basicAuth({
+        users: { [config.webUsername]: config.webPassword },
+        challenge: true,
+        realm: 'vpnIndicator99svv912',
+        unauthorizedResponse: '<h1>Unauthorised</h1>'
+    });
+}
+
 function server() {
     const app = express();
 
     app.get('/status', statusRoute);
 
+    app.use(authMiddleware());
+
     // serve the web UI at /
     app.use(express.static(path.join(__dirname, '../static')));
-
-    app.use('/api', basicAuth({
-        users: { [config.webUsername]: config.webPassword },
-        challenge: true,
-        realm: 'vpnIndicator99svv912'
-    }));
 
     app.put('/api/toggle', toggleRoute);
 
