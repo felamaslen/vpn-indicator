@@ -32,13 +32,12 @@ class App extends Component {
     render() {
         return (
             <div className="app-container">
-                <div>
+                <div className="current-status">
                     <CurrentStatus
                         statusText={this.props.vpnStatusText}
                         loading={this.props.loading}
                     />
                 </div>
-                <button onClick={() => this.checkState()}>Check</button>
                 <button onClick={() => this.toggleState()}>Toggle</button>
             </div>
         );
