@@ -1,23 +1,28 @@
+import axios from 'axios';
+
 import buildMessage from '../messageBuilder';
 import {
     VPN_STATUS_RECEIVED
 } from '../actions';
 
-function getStatusFromAPI() {
-    // TODO: actually get the status using an HTTP request
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(true);
-        }, 200);
-    });
-}
-
-export function initiateVPNStatusRequest() {
+export function getVPNStatus() {
     return async dispatch => {
         // contact the api
-        const result = await getStatusFromAPI();
+        try {
+            const result = await axios.get('/status');
 
-        return dispatch(buildMessage(VPN_STATUS_RECEIVED, result));
+            const vpnEnabled = result === 'vpn';
+
+            return dispatch(buildMessage(VPN_STATUS_RECEIVED, vpnEnabled));
+        }
+        catch (err) {
+            const status = err.response.status;
+            const message = err.response.data;
+
+            console.warn(`Error ${status} while getting VPN status: server responded with "${message}"`);
+
+            return dispatch(buildMessage(VPN_STATUS_RECEIVED, null));
+        }
     };
 }
 

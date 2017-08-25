@@ -4,12 +4,12 @@ import {
     VPN_STATUS_RECEIVED
 } from './';
 
-import { initiateVPNStatusRequest } from '../effects/app.effects';
+import { getVPNStatus } from '../effects/app.effects';
 
 export function vpnStatusRequested() {
     return dispatch => {
         // side effect for getting the status from the server
-        initiateVPNStatusRequest()(dispatch);
+        getVPNStatus()(dispatch);
 
         return dispatch(buildMessage(VPN_STATUS_REQUESTED));
     }
