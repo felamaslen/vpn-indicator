@@ -26,9 +26,9 @@ function respondToServerStatus(request, type) {
     };
 }
 export function getVPNStatus() {
-    return respondToServerStatus('/status', 'get');
+    return respondToServerStatus('status', 'get');
 }
 export function toggleVPNStatus() {
-    return respondToServerStatus('/api/toggle', 'put');
+    return respondToServerStatus('api/toggle', 'put');
 }
 
