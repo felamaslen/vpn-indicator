@@ -8,7 +8,6 @@ describe('<CurrentStatus/>', () => {
     it('should have a status element', () => {
         const wrapper = shallow(<CurrentStatus/>);
         expect(wrapper.find('span')).to.have.lengthOf(1);
-        console.log(wrapper.find('span'));
     });
 
     it('should have a status property', () => {

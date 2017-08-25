@@ -1,15 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import { combineReducers } from 'redux-immutable';
+import { Map as map } from 'immutable';
 
 import globalReducer from './reducers';
 
-function getInitialState() {
-    // initial state of the app
-    return {};
-}
-
 function getStore() {
-    const initialState = getInitialState();
     const enhancers = [];
     const middleware = [thunk];
 
@@ -26,13 +22,13 @@ function getStore() {
         ...enhancers
     );
 
-    const store = createStore(
-        globalReducer,
+    const initialState = map({});
+
+    return createStore(
+        combineReducers({ appState: globalReducer }),
         initialState,
         composedEnhancers
     );
-
-    return store;
 }
 
 export default getStore;

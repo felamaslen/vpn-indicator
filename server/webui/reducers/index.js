@@ -1,13 +1,30 @@
-import { combineReducers } from 'redux';
+import { createReducer } from 'redux-create-reducer';
 
-import indexPage from './IndexReducer';
+import {
+    VPN_STATUS_REQUESTED,
+    VPN_STATUS_RECEIVED
+} from '../constants/actions';
 
-// Note: each of the properties in the object passed to
-// combineReducers will be inserted into the main
-// state object of the app
-const globalReducer = combineReducers({
-    indexPage
-});
+import {
+    requestVPNStatus,
+    handleVPNStatus
+} from './AppReducer';
 
-export default globalReducer;
+import initialReduction from '../reduction';
+
+function createReducerObject(array) {
+    return array.reduce((last, item) => {
+        last[item[0]] = (reduction, action) => item[1](reduction, action.payload);
+
+        return last;
+    }, {});
+}
+
+// map actions to reducers
+const reducers = createReducerObject([
+    [VPN_STATUS_REQUESTED, requestVPNStatus],
+    [VPN_STATUS_RECEIVED, handleVPNStatus]
+]);
+
+export default createReducer(initialReduction, reducers);
 

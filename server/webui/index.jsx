@@ -5,7 +5,6 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { StaticRouter, Route, Switch } from 'react-router-dom';
 
 import getConfig from '../config';
 const config = getConfig().webui;
@@ -15,29 +14,17 @@ import './sass/index.scss';
 
 import getStore from './store';
 
-// react redux router object
-import routes from './router';
+// main app container component
+import App from './containers/App';
 
 // common components
 import Header from './components/Header';
 
-const context = {};
-
-const switchRoutes = routes.map((route, index) => {
-    const routeKey = `route${index}`;
-
-    return <Route key={routeKey} {...route} />;
-});
-
 ReactDOM.render(
-    <div>
+    <div className="container">
         <Header title={config.title} />
         <Provider store={getStore()}>
-            <StaticRouter location={window.location.pathname} context={context}>
-                <Switch>
-                    {switchRoutes}
-                </Switch>
-            </StaticRouter>
+            <App />
         </Provider>
     </div>,
     document.getElementById('root')
