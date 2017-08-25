@@ -2,8 +2,22 @@ import buildMessage from '../messageBuilder';
 import {
     VPN_STATUS_REQUESTED,
     VPN_STATUS_RECEIVED
-} from '../constants/actions';
+} from './';
 
-export const vpnStatusRequested = () => buildMessage(VPN_STATUS_REQUESTED);
-export const vpnStatusReceived = status => buildMessage(VPN_STATUS_RECEIVED, status);
+import { initiateVPNStatusRequest } from '../effects/app.effects';
+
+export function vpnStatusRequested() {
+    return dispatch => {
+        // side effect for getting the status from the server
+        initiateVPNStatusRequest()(dispatch);
+
+        return dispatch(buildMessage(VPN_STATUS_REQUESTED));
+    }
+}
+
+export function vpnStatusReceived(status) {
+    return dispatch => {
+        return dispatch(buildMessage(VPN_STATUS_RECEIVED, status));
+    }
+}
 

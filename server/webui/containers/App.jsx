@@ -12,10 +12,16 @@ import {
 import CurrentStatus from '../components/CurrentStatus';
 
 class App extends Component {
+    checkState() {
+        vpnStatusRequested()(this.props.dispatch);
+    }
     render() {
         return (
             <div className="app-container">
-                <CurrentStatus statusText={this.props.vpnStatusText}/>
+                <div>
+                    <CurrentStatus statusText={this.props.vpnStatusText}/>
+                </div>
+                <button onClick={() => this.checkState()}>Check</button>
             </div>
         );
     }

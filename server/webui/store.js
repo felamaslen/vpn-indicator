@@ -25,7 +25,9 @@ function getStore() {
     const initialState = map({});
 
     return createStore(
-        combineReducers({ appState: globalReducer }),
+        combineReducers({
+            appState: globalReducer
+        }),
         initialState,
         composedEnhancers
     );
