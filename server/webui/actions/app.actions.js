@@ -1,4 +1,4 @@
-import buildMessage from '../messageBuilder';
+import buildMessage from '../lib/messageBuilder';
 import {
     VPN_STATUS_REQUESTED,
     VPN_STATUS_RECEIVED

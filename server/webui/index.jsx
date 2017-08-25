@@ -12,7 +12,7 @@ const config = getConfig().webui;
 // all styles imported here
 import './sass/index.scss';
 
-import getStore from './store';
+import getStore from './lib/store';
 
 // main app container component
 import App from './containers/App';

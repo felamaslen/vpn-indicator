@@ -1,4 +1,4 @@
-import { formatVPNStatus } from '../lang';
+import { formatVPNStatus } from '../lib/lang';
 
 export function requestVPNStatus(appState) {
     // could put an optimistic update here?

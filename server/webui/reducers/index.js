@@ -10,7 +10,7 @@ import {
     handleVPNStatus
 } from './app.reducer';
 
-import initialReduction from '../reduction';
+import initialReduction from '../lib/reduction';
 
 function createReducerObject(array) {
     return array.reduce((last, item) => {

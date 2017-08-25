@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import buildMessage from '../messageBuilder';
+import buildMessage from '../lib/messageBuilder';
 import {
     VPN_STATUS_RECEIVED
 } from '../actions';

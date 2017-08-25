@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { combineReducers } from 'redux-immutable';
 import { Map as map } from 'immutable';
 
-import globalReducer from './reducers';
+import globalReducer from '../reducers';
 
 function getStore() {
     const enhancers = [];
