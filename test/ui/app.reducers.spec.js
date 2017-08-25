@@ -17,12 +17,16 @@ itEach({ testPerIteration: true });
 describe('App', () => {
     describe('reducers', () => {
         describe('requestVPNStatus', () => {
-            it('should do nothing', () => {
-                expect(requestVPNStatus(appState)).to.be.equal(appState);
+            it('should set loading status', () => {
+                expect(requestVPNStatus(appState).get('loading')).to.be.equal(true);
             });
         });
 
         describe('handleVPNStatus', () => {
+            it('should unset loading status', () => {
+                expect(handleVPNStatus(appState).get('loading')).to.be.equal(false);
+            });
+
             it.each(
                 [
                     { lang: 'enGB' },
@@ -42,6 +46,12 @@ describe('App', () => {
                     expect(statusText[2].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_UNKNOWN);
                 }
             );
+        });
+
+        describe('toggleVPNStatus', () => {
+            it('should set loading status', () => {
+                expect(toggleVPNStatus(appState).get('loading')).to.be.equal(true);
+            });
         });
     });
 });

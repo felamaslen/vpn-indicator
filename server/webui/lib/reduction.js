@@ -8,6 +8,7 @@ import { getLocalisation } from '../lang/';
 
 export default fromJS({
     lang: getLocalisation(),
+    loading: false,
     vpnStatusText: ''
 });
 

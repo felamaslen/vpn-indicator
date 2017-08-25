@@ -3,10 +3,16 @@
  */
 
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
+
+import LoadingSpinner from './LoadingSpinner';
 
 class CurrentStatus extends Component {
     render() {
+        if (this.props.loading) {
+            return <LoadingSpinner />;
+        }
+
         return (
             <span className="current-status-wrapper">
                 {this.props.statusText}
@@ -16,7 +22,8 @@ class CurrentStatus extends Component {
 }
 
 CurrentStatus.propTypes = {
-    statusText: propTypes.string
+    loading: PropTypes.boolean,
+    statusText: PropTypes.string
 };
 
 export default CurrentStatus;

@@ -2,7 +2,11 @@ import localise from '../lang/';
 
 export function requestVPNStatus(appState) {
     // could put an optimistic update here?
-    return appState;
+    return appState.set('loading', true);
+}
+
+export function toggleVPNStatus(appState) {
+    return appState.set('loading', true);
 }
 
 function getVPNStatusText(appState, status) {
