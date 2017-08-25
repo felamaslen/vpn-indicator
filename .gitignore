@@ -66,3 +66,10 @@ bower_components
 **/__pycache__
 
 gtk-indicator/env
+server/static/js/**
+server/static/css/**
+server/static/*.ttf
+server/static/*.eot
+server/static/*.woff
+server/static/*.woff2
+server/static/*.svg

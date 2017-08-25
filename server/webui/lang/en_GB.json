@@ -1,0 +1,5 @@
+{
+    "VPN_STATUS_ON": "VPN is connected and set as the default gateway",
+    "VPN_STATUS_OFF": "VPN is not set as the default gateway",
+    "VPN_STATUS_UNKNOWN": "VPN is in an unknown state"
+}
