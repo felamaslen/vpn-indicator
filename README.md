@@ -10,10 +10,11 @@ The gateway has a special routing table (default: `vpndef1`) which routes reques
 
 The point of this app is to be an interface to a script which toggles this routing table.
 
----
 ## Server setup
 
-### Backend Routing
+---
+
+### Routing tables setup
 
 In this example, the server has interfaces:
 - LAN: `eth0` with
@@ -40,19 +41,29 @@ None are supported as of yet. MacOS support may be added in future.
 You could probably get it to run quite easily on OpenBSD etc.
 
 ---
+
+### Configuration
+Copy `.env.example` to `.env` and configure everything there. Or, set the appropriate environment variables in your deployment environment of choice.
+
 ### Installation
 Do this once the routing tables are all set up (see above).
 
-- Run `npm install` to install dependencies.
+- Run `npm install` to install dependencies and build the web UI.
 
 ### Running
 
 - Run `npm start` to start the web server. The port is set in the environment variables as `PORT`; the default is 8000.
 
+You can then access the web UI at `http://localhost:8000`. The authentication is Basic Auth, with credentials supplied as environment variables (i.e. in `.env`).
+
 ### Development
 
-- Run `npm run dev` to watch the server for changes.
+- Run `npm run dev:srv` to run the server and watch for changes.
+
+- Run `npm run dev:ui` to run a hot-reload webpack-dev-server on top of this for the web UI. This can be accessed by default at `http://localhost:8001` (the port is set to the environment variable PORT_WDS).
+
 - Run `npm test` to test the server.
+- Run `npm run test:ui` to test the web app.
 
 ---
 ## Client setup

@@ -1,0 +1,42 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+@keyframes spin {
+    from {
+        transform: rotateZ(10deg);
+    }
+    to {
+        transform: rotateZ(370deg);
+    }
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    display: block;
+    position: relative;
+    text-indent: -9999px;
+    margin: 0 auto;
+
+    &:before {
+        content: "";
+        display: block;
+        border: 6px solid #ccc;
+        border-left-color: black;
+        border-radius: 100%;
+        transform: rotateZ(10deg);
+        width: inherit;
+        height: inherit;
+        left: -6px;
+        top: -6px;
+        position: absolute;
+        animation: linear infinite 1s spin;
+    }
+}
+
+.main {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
+}
+

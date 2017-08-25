@@ -1,9 +1,14 @@
 const os = require('os');
-const express = require('express');
+const exec = require('child_process').exec;
 const iprule = require('iproute').rule;
+const path = require('path');
+const express = require('express');
+const basicAuth = require('express-basic-auth');
 
+// dotenv is NOT loaded in config, since it's common to both
+// the backend and webui
 require('dotenv').config();
-const config = require('./config')();
+const config = require('../config')();
 
 function getOS() {
     const platform = os.platform();
@@ -63,7 +68,7 @@ function statusResult(gatewayStatus) {
         : 'novpn';
 }
 
-async function route(req, res) {
+async function statusRoute(req, res) {
     try {
         const gatewayStatus = await isVPNDefaultGateway();
 
@@ -76,10 +81,66 @@ async function route(req, res) {
     }
 }
 
+function toggleRoute(req, res) {
+    return new Promise((resolve, reject) => {
+        exec(config.toggleCmd, (err, stdout) => {
+            if (err) {
+                reject(res.status(500).end(err.message));
+            }
+
+            const newStatus = stdout.match(/^Enabling/)
+                ? 'vpn'
+                : 'novpn';
+
+            resolve(res.end(newStatus));
+        });
+    });
+}
+
+function authMiddleware() {
+    return basicAuth({
+        users: { [config.webUsername]: config.webPassword },
+        challenge: true,
+        realm: 'vpnIndicator99svv912',
+        unauthorizedResponse: '<h1>Unauthorised</h1>'
+    });
+}
+function setAuth(app) {
+    app.use(authMiddleware());
+}
+
+function setViews(app) {
+    // view template(s)
+    app.set('views', path.join(__dirname, '../webui/templates'));
+    app.set('view engine', 'ejs');
+
+    app.get('/', (req, res) => {
+        return res.render('index', {
+            title: config.webui.title
+        });
+    });
+
+    // serve the web UI at /
+    app.use(express.static(path.join(__dirname, '../static')));
+}
+
+function setApiMethods(app) {
+    app.put('/api/toggle', toggleRoute);
+}
+
 function server() {
     const app = express();
 
-    app.get('/', route);
+    app.get('/status', statusRoute);
+
+    setAuth(app);
+
+    setViews(app);
+
+    setApiMethods(app);
+
+    // catch 404 errors
+    app.use((req, res) => res.status(404).end('not found'));
 
     const port = process.env.PORT || 8000;
 
@@ -94,6 +155,7 @@ module.exports = {
     getOS,
     isVPNDefaultGateway,
     statusResult,
-    route,
+    statusRoute,
+    toggleRoute,
     server
 };
