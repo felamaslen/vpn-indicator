@@ -29,7 +29,11 @@ class App extends Component {
     componentWillUpdate(nextProps) {
         // periodically check the VPN status
         if (this.props.loading && !nextProps.loading) {
-            setTimeout(() => {
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+
+            this.timer = setTimeout(() => {
                 this.checkState();
             }, this.props.checkTimeout);
         }
