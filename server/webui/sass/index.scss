@@ -15,13 +15,7 @@
 }
 
 .loading-spinner {
-    width: 32px;
-    height: 32px;
-    display: inline-block;
-    vertical-align: middle;
     position: relative;
-    text-indent: -9999px;
-    margin: 0 auto;
 
     &:before {
         content: "";
@@ -42,6 +36,28 @@
 .main {
     margin: 3rem 1.5rem;
     text-align: center;
-    height: 100px;
+}
+
+.current-status, .loading-spinner {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    vertical-align: middle;
+    text-indent: -9999px;
+    margin: 0 auto;
+}
+
+.current-status {
+    background-image: url(./icons.svg);
+    background-size: 96px 32px;
+    &.on {
+        background-position: -32px 0;
+    }
+    &.off {
+        background-position: 0 0;
+    }
+    &.unknown {
+        background-position: -64px 0;
+    }
 }
 
