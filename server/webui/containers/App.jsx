@@ -7,7 +7,8 @@ import classNames from 'classnames';
 
 import {
     vpnStatusRequested,
-    vpnStatusToggled
+    vpnStatusToggled,
+    languageSelected
 } from '../actions/app.actions';
 
 import Header from '../components/Header';
@@ -16,12 +17,17 @@ import CurrentStatus from '../components/CurrentStatus';
 import getConfig from '../../config';
 const config = getConfig().webui;
 
-class App extends Component {
+import { languages } from '../lang';
+
+export class App extends Component {
     checkState() {
         vpnStatusRequested()(this.props.dispatch);
     }
     toggleState() {
         vpnStatusToggled()(this.props.dispatch);
+    }
+    selectLang() {
+        languageSelected(this.langSelect.value)(this.props.dispatch);
     }
     componentDidMount() {
         this.checkState();
@@ -39,37 +45,71 @@ class App extends Component {
         }
     }
     render() {
+        const langOptions = languages.map(language => {
+            return (
+                <option
+                    value={language.get('code')}
+                    key={language.get('code')}
+                >
+                    {language.get('name')}
+                </option>
+            );
+        });
+
+        const langInputRef = input => {
+            this.langSelect = input;
+        };
+
+        const langInputOnChange = () => this.selectLang();
+
         return (
             <div className="container">
                 <Header title={config.title} hostname={config.hostname} />
                 <div className="main">
                     <CurrentStatus
-                        statusText={this.props.vpnStatusText}
+                        status={this.props.vpnStatus}
                         loading={this.props.loading}
                     />
                 </div>
-                <button
-                    type="button"
-                    className="btn btn-primary toggle-btn"
-                    onClick={() => this.toggleState()}>Toggle</button>
+                <div>
+                    <button
+                        type="button"
+                        className="btn btn-primary toggle-btn"
+                        onClick={() => this.toggleState()}>
+                        {this.props.textToggleButton}
+                    </button>
+                </div>
+                <div className="form-group">
+                    <select className="form-control"
+                        ref={langInputRef}
+                        onChange={langInputOnChange}
+                        defaultValue={this.props.langCode}>
+                        {langOptions}
+                    </select>
+                </div>
             </div>
         );
     }
 }
 
 App.propTypes = {
-    config: PropTypes.instanceOf(map).isRequired,
-    loading: PropTypes.bool.isRequired,
-    checkTimeout: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
-    vpnStatusText: PropTypes.instanceOf(map).isRequired
+    loading: PropTypes.bool.isRequired,
+    langCode: PropTypes.string.isRequired,
+    checkTimeout: PropTypes.number.isRequired,
+    vpnStatus: PropTypes.instanceOf(map).isRequired,
+    textToggleButton: PropTypes.string.isRequired
 };
 
 function mapStateToProps(reduction, ownProps) {
+    const appState = reduction.get('appState');
+
     return {
-        loading: reduction.getIn(['appState', 'loading']),
-        checkTimeout: reduction.getIn(['appState', 'checkTimeout']),
-        vpnStatusText: reduction.getIn(['appState', 'vpnStatusText'])
+        loading: appState.get('loading'),
+        langCode: appState.getIn(['lang', 'code']),
+        checkTimeout: appState.get('checkTimeout'),
+        vpnStatus: appState.get('vpnStatus'),
+        textToggleButton: appState.getIn(['text', 'toggleButton'])
     };
 }
 

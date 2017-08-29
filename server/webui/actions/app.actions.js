@@ -2,10 +2,13 @@ import buildMessage from '../lib/messageBuilder';
 import {
     VPN_STATUS_REQUESTED,
     VPN_STATUS_TOGGLED,
-    VPN_STATUS_RECEIVED
+    VPN_STATUS_RECEIVED,
+    LANGUAGE_SELECTED
 } from './';
 
 import { getVPNStatus, toggleVPNStatus } from '../effects/app.effects';
+
+import { setLanguage } from '../lang';
 
 export function vpnStatusRequested() {
     return dispatch => {
@@ -28,6 +31,15 @@ export function vpnStatusToggled() {
 export function vpnStatusReceived(status) {
     return dispatch => {
         return dispatch(buildMessage(VPN_STATUS_RECEIVED, status));
+    };
+}
+
+export function languageSelected(code) {
+    // side effect: set the language in local storage
+    setLanguage(code);
+
+    return dispatch => {
+        return dispatch(buildMessage(LANGUAGE_SELECTED, code));
     };
 }
 

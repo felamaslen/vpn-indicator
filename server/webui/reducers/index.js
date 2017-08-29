@@ -3,13 +3,15 @@ import { createReducer } from 'redux-create-reducer';
 import {
     VPN_STATUS_REQUESTED,
     VPN_STATUS_TOGGLED,
-    VPN_STATUS_RECEIVED
+    VPN_STATUS_RECEIVED,
+    LANGUAGE_SELECTED
 } from '../actions';
 
 import {
     requestVPNStatus,
     toggleVPNStatus,
-    handleVPNStatus
+    handleVPNStatus,
+    selectLanguage
 } from './app.reducer';
 
 import initialReduction from '../lib/reduction';
@@ -26,7 +28,8 @@ function createReducerObject(array) {
 const reducers = createReducerObject([
     [VPN_STATUS_REQUESTED, requestVPNStatus],
     [VPN_STATUS_TOGGLED, toggleVPNStatus],
-    [VPN_STATUS_RECEIVED, handleVPNStatus]
+    [VPN_STATUS_RECEIVED, handleVPNStatus],
+    [LANGUAGE_SELECTED, selectLanguage]
 ]);
 
 export default createReducer(initialReduction, reducers);
