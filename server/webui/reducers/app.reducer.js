@@ -1,3 +1,4 @@
+import { Map as map } from 'immutable';
 import localise from '../lang/';
 
 export function requestVPNStatus(appState) {
@@ -10,14 +11,23 @@ export function toggleVPNStatus(appState) {
 }
 
 function getVPNStatusText(appState, status) {
+    let type = null;
+    let text = null;
+
     if (status === true) {
-        return localise(appState, 'VPN_STATUS_ON');
+        text = localise(appState, 'VPN_STATUS_ON');
+        type = 'on';
     }
-    if (status === false) {
-        return localise(appState, 'VPN_STATUS_OFF');
+    else if (status === false) {
+        text = localise(appState, 'VPN_STATUS_OFF');
+        type = 'off';
+    }
+    else {
+        text = localise(appState, 'VPN_STATUS_UNKNOWN');
+        type = 'unknown';
     }
 
-    return localise(appState, 'VPN_STATUS_UNKNOWN');
+    return map({ text, type });
 }
 
 export function handleVPNStatus(appState, status) {

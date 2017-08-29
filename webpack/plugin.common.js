@@ -7,7 +7,7 @@ module.exports = [
         path: path.join(__dirname, '../.env'),
         safe: true
     }),
-    new ExtractTextPlugin('css/style.css', {
+    new ExtractTextPlugin('./css/style.css', {
         allChunks: true
     })
 ];

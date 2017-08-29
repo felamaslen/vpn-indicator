@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Map as map } from 'immutable';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -56,7 +57,7 @@ App.propTypes = {
     loading: PropTypes.bool.isRequired,
     checkTimeout: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
-    vpnStatusText: PropTypes.string.isRequired
+    vpnStatusText: PropTypes.instanceOf(map).isRequired
 };
 
 function mapStateToProps(reduction, ownProps) {

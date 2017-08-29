@@ -19,12 +19,12 @@ module.exports = {
             loader: jsxLoader
         },
         {
-            test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
-            loader: 'url-loader'
-        },
-        {
-            test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: 'file-loader?name=./css/[hash].[ext]'
+            test: /\.(woff2?|ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+            loader: 'file-loader',
+            query: {
+                name: 'assets/[hash].[ext]',
+                publicPath: '/'
+            }
         },
         {
             test: /\.scss$/,

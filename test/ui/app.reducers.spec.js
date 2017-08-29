@@ -42,9 +42,19 @@ describe('App', () => {
                         status => handleVPNStatus(appStateLocalised, status)
                     );
 
-                    expect(statusText[0].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_ON);
-                    expect(statusText[1].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_OFF);
-                    expect(statusText[2].get('vpnStatusText')).to.be.equal(lang.VPN_STATUS_UNKNOWN);
+                    expect(statusText[0].getIn(['vpnStatusText', 'text']))
+                        .to.equal(lang.VPN_STATUS_ON);
+                    expect(statusText[1].getIn(['vpnStatusText', 'text']))
+                        .to.equal(lang.VPN_STATUS_OFF);
+                    expect(statusText[2].getIn(['vpnStatusText', 'text']))
+                        .to.equal(lang.VPN_STATUS_UNKNOWN);
+
+                    expect(statusText[0].getIn(['vpnStatusText', 'type']))
+                        .to.equal('on');
+                    expect(statusText[1].getIn(['vpnStatusText', 'type']))
+                        .to.equal('off');
+                    expect(statusText[2].getIn(['vpnStatusText', 'type']))
+                        .to.equal('unknown');
                 }
             );
         });
