@@ -22,7 +22,7 @@ module.exports = {
             test: /\.(woff2?|ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: 'file-loader',
             query: {
-                name: './assets/[hash].[ext]',
+                name: 'assets/[hash].[ext]',
                 publicPath: '/'
             }
         },
