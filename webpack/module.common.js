@@ -23,7 +23,7 @@ module.exports = {
             loader: 'file-loader',
             query: {
                 name: 'assets/favicon.png',
-                publicPath: '/'
+                publicPath: '../'
             }
         },
         {
@@ -36,7 +36,7 @@ module.exports = {
             loader: 'file-loader',
             query: {
                 name: 'assets/[hash].[ext]',
-                publicPath: '/'
+                publicPath: '../'
             }
         },
         {
