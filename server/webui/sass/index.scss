@@ -9,39 +9,73 @@
     }
 }
 
-.toggle-btn {
-    margin: 0.5em auto;
-    display: block;
-}
-
-.loading-spinner {
-    width: 32px;
-    height: 32px;
-    display: inline-block;
-    vertical-align: middle;
+@mixin loading-spinner {
     position: relative;
-    text-indent: -9999px;
-    margin: 0 auto;
 
     &:before {
         content: "";
         display: block;
-        border: 6px solid #ccc;
+        border: 10px solid #ccc;
         border-left-color: black;
         border-radius: 100%;
         transform: rotateZ(10deg);
         width: inherit;
         height: inherit;
-        left: -6px;
-        top: -6px;
         position: absolute;
         animation: linear infinite 1s spin;
+    }
+}
+
+#title {
+    line-height: 1.3em;
+    text-align: center;
+
+    &:before {
+        content: "";
+        background-image: url(./logo.png);
+        background-size: 1.3em 1.3em;
+        width: 1.3em;
+        height: 1.3em;
+        margin-right: 0.4em;
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 
 .main {
     margin: 3rem 1.5rem;
     text-align: center;
-    height: 100px;
+}
+
+.current-status {
+    width: 96px;
+    height: 96px;
+    display: inline-block;
+    vertical-align: middle;
+    text-indent: -9999px;
+    margin: 0 auto;
+    background-image: url(./icons.svg);
+    background-size: 288px 96px;
+    &.loading {
+        background-image: none;
+        width: 64px;
+        height: 64px;
+        margin: 16px;
+        @include loading-spinner;
+    }
+    &.on {
+        background-position: -96px 0;
+    }
+    &.off {
+        background-position: 0 0;
+    }
+    &.unknown {
+        background-position: -192px;
+    }
+}
+
+.toggle-btn {
+    margin: 0.5em auto;
+    display: block;
 }
 

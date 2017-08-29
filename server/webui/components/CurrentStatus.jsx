@@ -4,18 +4,20 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import LoadingSpinner from './LoadingSpinner';
+import { Map as map } from 'immutable';
+import classNames from 'classnames';
 
 class CurrentStatus extends Component {
     render() {
-        if (this.props.loading) {
-            return <LoadingSpinner />;
-        }
+        const classes = classNames({
+            'current-status': true,
+            [this.props.statusText.get('type')]: !this.props.loading,
+            loading: this.props.loading
+        });
 
         return (
-            <span className="current-status-wrapper">
-                {this.props.statusText}
+            <span className={classes}>
+                {this.props.statusText.get('text')}
             </span>
         );
     }
@@ -23,7 +25,7 @@ class CurrentStatus extends Component {
 
 CurrentStatus.propTypes = {
     loading: PropTypes.bool,
-    statusText: PropTypes.string
+    statusText: PropTypes.instanceOf(map)
 };
 
 export default CurrentStatus;

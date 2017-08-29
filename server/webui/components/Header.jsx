@@ -9,7 +9,7 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <h1 className="title">{this.props.title}</h1>
+                <h1 className="title" id="title">{this.props.title}</h1>
             </header>
         );
     }

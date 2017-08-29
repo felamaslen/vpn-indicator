@@ -10,6 +10,6 @@ export default fromJS({
     lang: getLocalisation(),
     loading: false,
     checkTimeout: 5000,
-    vpnStatusText: ''
+    vpnStatusText: { type: '', text: '' }
 });
 

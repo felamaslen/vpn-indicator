@@ -19,12 +19,25 @@ module.exports = {
             loader: jsxLoader
         },
         {
-            test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
-            loader: 'url-loader'
+            test: /logo\.png/,
+            loader: 'file-loader',
+            query: {
+                name: 'assets/favicon.png',
+                publicPath: '/'
+            }
         },
         {
-            test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: 'file-loader?name=./css/[hash].[ext]'
+            test: filename => {
+                if (filename.match(/logo\.png/)) {
+                    return false;
+                }
+                return filename.match(/\.(woff2?|ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/);
+            },
+            loader: 'file-loader',
+            query: {
+                name: 'assets/[hash].[ext]',
+                publicPath: '/'
+            }
         },
         {
             test: /\.scss$/,

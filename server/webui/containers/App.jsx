@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Map as map } from 'immutable';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -28,7 +29,11 @@ class App extends Component {
     componentWillUpdate(nextProps) {
         // periodically check the VPN status
         if (this.props.loading && !nextProps.loading) {
-            setTimeout(() => {
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+
+            this.timer = setTimeout(() => {
                 this.checkState();
             }, this.props.checkTimeout);
         }
@@ -56,7 +61,7 @@ App.propTypes = {
     loading: PropTypes.bool.isRequired,
     checkTimeout: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
-    vpnStatusText: PropTypes.string.isRequired
+    vpnStatusText: PropTypes.instanceOf(map).isRequired
 };
 
 function mapStateToProps(reduction, ownProps) {
