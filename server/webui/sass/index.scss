@@ -9,11 +9,6 @@
     }
 }
 
-.toggle-btn {
-    margin: 0.5em auto;
-    display: block;
-}
-
 @mixin loading-spinner {
     position: relative;
 
@@ -28,6 +23,22 @@
         height: inherit;
         position: absolute;
         animation: linear infinite 1s spin;
+    }
+}
+
+#title {
+    line-height: 1.3em;
+    text-align: center;
+
+    &:before {
+        content: "";
+        background-image: url(./logo.png);
+        background-size: 1.3em 1.3em;
+        width: 1.3em;
+        height: 1.3em;
+        margin-right: 0.4em;
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 
@@ -61,5 +72,10 @@
     &.unknown {
         background-position: -192px;
     }
+}
+
+.toggle-btn {
+    margin: 0.5em auto;
+    display: block;
 }
 
