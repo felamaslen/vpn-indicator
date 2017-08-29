@@ -6,7 +6,8 @@ module.exports = () => {
         webUsername: process.env.WEB_AUTH_USERNAME,
         webPassword: process.env.WEB_AUTH_PASSWORD,
         webui: {
-            title: process.env.WEBUI_TITLE
+            title: process.env.WEBUI_TITLE,
+            hostname: process.env.GATEWAY_LAN
         }
     };
 };

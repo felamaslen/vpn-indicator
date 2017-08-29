@@ -17,7 +17,7 @@ import App from './containers/App';
 ReactDOM.render(
     <div className="jumbotron">
         <Provider store={getStore()}>
-            <App />
+            <App/>
         </Provider>
     </div>,
     document.getElementById('root')

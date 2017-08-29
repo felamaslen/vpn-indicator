@@ -18,5 +18,18 @@ describe('<Header/>', () => {
         const wrapper = shallow(<Header title="TestTitle" />);
         expect(wrapper.instance().props.title).to.equal('TestTitle');
     });
+
+    it('should have a hostname element', () => {
+        const wrapper = shallow(<Header/>);
+        const hostname = wrapper.find('h2');
+
+        expect(hostname).to.have.lengthOf(1);
+        expect(hostname.is('#hostname')).to.equal(true);
+    });
+
+    it('should have a hostname property', () => {
+        const wrapper = shallow(<Header hostname="TestHostname" />);
+        expect(wrapper.instance().props.hostname).to.equal('TestHostname');
+    });
 });
 

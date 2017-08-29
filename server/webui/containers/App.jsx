@@ -41,7 +41,7 @@ class App extends Component {
     render() {
         return (
             <div className="container">
-                <Header title={config.title} />
+                <Header title={config.title} hostname={config.hostname} />
                 <div className="main">
                     <CurrentStatus
                         statusText={this.props.vpnStatusText}
@@ -58,6 +58,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+    config: PropTypes.instanceOf(map).isRequired,
     loading: PropTypes.bool.isRequired,
     checkTimeout: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
