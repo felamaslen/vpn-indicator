@@ -14,7 +14,7 @@
     display: block;
 }
 
-.loading-spinner {
+@mixin loading-spinner {
     position: relative;
 
     &:before {
@@ -36,18 +36,22 @@
     text-align: center;
 }
 
-.current-status, .loading-spinner {
+.current-status {
     width: 96px;
     height: 96px;
     display: inline-block;
     vertical-align: middle;
     text-indent: -9999px;
     margin: 0 auto;
-}
-
-.current-status {
     background-image: url(./icons.svg);
     background-size: 288px 96px;
+    &.loading {
+        background-image: none;
+        width: 64px;
+        height: 64px;
+        margin: 16px;
+        @include loading-spinner;
+    }
     &.on {
         background-position: -96px 0;
     }

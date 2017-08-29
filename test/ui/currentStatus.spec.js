@@ -32,8 +32,8 @@ describe('<CurrentStatus/>', () => {
 
         expect(wrapper.instance().props.loading).to.equal(true);
         expect(wrapper.find('span')).to.have.lengthOf(1);
-        expect(wrapper.find('span').hasClass('loading-spinner')).to.equal(true);
-        expect(wrapper.find('span').text()).to.equal('Loading...');
+        expect(wrapper.find('span').hasClass('loading')).to.equal(true);
+        expect(wrapper.find('span').text()).to.equal(testStatus.get('text'));
     });
 });
 

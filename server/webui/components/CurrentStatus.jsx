@@ -5,16 +5,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Map as map } from 'immutable';
-
-import LoadingSpinner from './LoadingSpinner';
+import classNames from 'classnames';
 
 class CurrentStatus extends Component {
     render() {
-        if (this.props.loading) {
-            return <LoadingSpinner />;
-        }
+        const classes = classNames({
+            'current-status': true,
+            [this.props.statusText.get('type')]: !this.props.loading,
+            loading: this.props.loading
+        });
 
-        const classes = `current-status ${this.props.statusText.get('type')}`;
         return (
             <span className={classes}>
                 {this.props.statusText.get('text')}

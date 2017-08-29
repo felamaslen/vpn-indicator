@@ -1,13 +1,26 @@
 import { Map as map } from 'immutable';
 import localise from '../lang/';
 
-export function requestVPNStatus(appState) {
+function loadingVPNStatus(appState) {
     // could put an optimistic update here?
-    return appState.set('loading', true);
+    return appState
+        .set('loading', true)
+        .set('vpnStatusText', map({
+            text: 'Loading...',
+            type: null
+        }));
+}
+
+export function requestVPNStatus(appState) {
+    // Note that the side effect to load the VPN status is initiated
+    // from the action, not the reducer.
+    // In redux, all reducers must be strictly pure.
+    // This is in contrast to Flux, where reducers may initiate side effects.
+    return loadingVPNStatus(appState);
 }
 
 export function toggleVPNStatus(appState) {
-    return appState.set('loading', true);
+    return loadingVPNStatus(appState);
 }
 
 function getVPNStatusText(appState, status) {
