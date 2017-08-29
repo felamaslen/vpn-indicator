@@ -42,6 +42,17 @@
     }
 }
 
+#hostname {
+    font-size: 1.1em;
+    color: #999;
+    text-align: center;
+    
+    &:before {
+        content: "Hostname: ";
+        color: #bbb;
+    }
+}
+
 .main {
     margin: 3rem 1.5rem;
     text-align: center;
