@@ -16,6 +16,8 @@ export default fromJS({
     maxTimeout: 1800000,
     vpnStatus: { text: '', type: '', status: null },
     text: {
+        title: localisation.getIn(['dict', 'TITLE']),
+        hostname: localisation.getIn(['dict', 'HOSTNAME']),
         toggleButton: localisation.getIn(['dict', 'TOGGLE'])
     }
 });

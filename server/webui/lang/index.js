@@ -8,20 +8,6 @@ import enGB from './en_GB.json';
 import zhCN from './zh_CN.json';
 import jpJP from './jp_JP.json';
 
-export function setLanguage(code) {
-    // side effect to set the app language
-    try {
-        localStorage.setItem('lang', code);
-    }
-    catch (err) {
-        console.warn('[ERROR] localStorage not supported; localisation not persistent');
-    }
-}
-
-export function getLanguage() {
-    return localStorage.getItem('lang');
-}
-
 export const languages = list([
     map({
         name: 'English (UK)',
@@ -39,6 +25,20 @@ export const languages = list([
         dict: map(jpJP)
     })
 ]);
+
+export function setLanguage(code) {
+    // side effect to set the app language
+    try {
+        localStorage.setItem('lang', code);
+    }
+    catch (err) {
+        console.warn('[ERROR] localStorage not supported; localisation not persistent');
+    }
+}
+
+export function getLanguage() {
+    return localStorage.getItem('lang');
+}
 
 export function getLocalisation(theCode) {
     let code = theCode;
