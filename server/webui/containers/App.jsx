@@ -13,11 +13,10 @@ import {
 
 import Header from '../components/Header';
 import CurrentStatus from '../components/CurrentStatus';
+import LanguageSelector from '../components/LanguageSelector';
 
 import getConfig from '../../config';
 const config = getConfig().webui;
-
-import { languages } from '../lang';
 
 export class App extends Component {
     checkState() {
@@ -26,8 +25,8 @@ export class App extends Component {
     toggleState() {
         vpnStatusToggled()(this.props.dispatch);
     }
-    selectLang() {
-        languageSelected(this.langSelect.value)(this.props.dispatch);
+    selectLang(value) {
+        languageSelected(value)(this.props.dispatch);
     }
     componentDidMount() {
         this.checkState();
@@ -45,22 +44,7 @@ export class App extends Component {
         }
     }
     render() {
-        const langOptions = languages.map(language => {
-            return (
-                <option
-                    value={language.get('code')}
-                    key={language.get('code')}
-                >
-                    {language.get('name')}
-                </option>
-            );
-        });
-
-        const langInputRef = input => {
-            this.langSelect = input;
-        };
-
-        const langInputOnChange = () => this.selectLang();
+        const langInputOnChange = value => this.selectLang(value);
 
         return (
             <div className="container">
@@ -79,14 +63,9 @@ export class App extends Component {
                         {this.props.textToggleButton}
                     </button>
                 </div>
-                <div className="form-group">
-                    <select className="form-control"
-                        ref={langInputRef}
-                        onChange={langInputOnChange}
-                        defaultValue={this.props.langCode}>
-                        {langOptions}
-                    </select>
-                </div>
+                <LanguageSelector
+                    value={this.props.langCode}
+                    onChange={langInputOnChange}/>
             </div>
         );
     }
