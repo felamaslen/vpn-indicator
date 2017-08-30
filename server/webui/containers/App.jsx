@@ -104,10 +104,15 @@ App.propTypes = {
 function mapStateToProps(reduction, ownProps) {
     const appState = reduction.get('appState');
 
+    const checkTimeout = Math.min(
+        appState.get('maxTimeout'),
+        appState.get('checkTimeout') * Math.pow(2, appState.get('numBadChecks'))
+    );
+
     return {
         loading: appState.get('loading'),
         langCode: appState.getIn(['lang', 'code']),
-        checkTimeout: appState.get('checkTimeout'),
+        checkTimeout,
         vpnStatus: appState.get('vpnStatus'),
         textToggleButton: appState.getIn(['text', 'toggleButton'])
     };
