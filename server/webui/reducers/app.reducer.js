@@ -52,12 +52,12 @@ export function handleVPNStatus(appState, status) {
 export function selectLanguage(appState, code) {
     const langSet = appState.set('lang', getLocalisation(code));
 
-    const vpnStatus = getVPNStatus(
-        langSet, appState.getIn(['vpnStatus', 'status'])
-    );
-
     return langSet
-        .setIn(['vpnStatus', 'text'], vpnStatus.get('text'))
+        .setIn(['text', 'title'], localise(langSet, 'TITLE'))
+        .setIn(['vpnStatus', 'text'], getVPNStatus(
+            langSet, appState.getIn(['vpnStatus', 'status'])
+        ).get('text'))
+        .setIn(['text', 'hostname'], localise(langSet, 'HOSTNAME'))
         .setIn(['text', 'toggleButton'], localise(langSet, 'TOGGLE'));
 }
 

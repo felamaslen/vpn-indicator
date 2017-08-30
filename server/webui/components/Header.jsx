@@ -10,15 +10,19 @@ class Header extends Component {
         return (
             <header>
                 <h1 className="title" id="title">{this.props.title}</h1>
-                <h2 id="hostname">{this.props.hostname}</h2>
+                <h2 id="hostname">
+                    <span className="label">{this.props.hostnameText}</span>
+                    <span className="value">{this.props.hostname}</span>
+                </h2>
             </header>
         );
     }
 }
 
 Header.propTypes = {
-    title: PropTypes.string,
-    hostname: PropTypes.string
+    title: PropTypes.string.isRequired,
+    hostnameText: PropTypes.string.isRequired,
+    hostname: PropTypes.string.isRequired
 };
 
 export default Header;

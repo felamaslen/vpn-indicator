@@ -48,7 +48,10 @@ export class App extends Component {
 
         return (
             <div className="container">
-                <Header title={config.title} hostname={config.hostname} />
+                <Header
+                    title={this.props.textTitle}
+                    hostnameText={this.props.textHostname}
+                    hostname={config.hostname} />
                 <div className="main">
                     <CurrentStatus
                         status={this.props.vpnStatus}
@@ -77,6 +80,8 @@ App.propTypes = {
     langCode: PropTypes.string.isRequired,
     checkTimeout: PropTypes.number.isRequired,
     vpnStatus: PropTypes.instanceOf(map).isRequired,
+    textTitle: PropTypes.string.isRequired,
+    textHostname: PropTypes.string.isRequired,
     textToggleButton: PropTypes.string.isRequired
 };
 
@@ -88,6 +93,8 @@ function mapStateToProps(reduction, ownProps) {
         langCode: appState.getIn(['lang', 'code']),
         checkTimeout: appState.get('checkTimeout'),
         vpnStatus: appState.get('vpnStatus'),
+        textTitle: appState.getIn(['text', 'title']),
+        textHostname: appState.getIn(['text', 'hostname']),
         textToggleButton: appState.getIn(['text', 'toggleButton'])
     };
 }
