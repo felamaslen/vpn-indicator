@@ -6,10 +6,15 @@ import { fromJS } from 'immutable';
 
 import { getLocalisation } from '../lang/';
 
+const localisation = getLocalisation();
+
 export default fromJS({
-    lang: getLocalisation(),
     loading: false,
+    lang: localisation,
     checkTimeout: 5000,
-    vpnStatusText: { type: '', text: '' }
+    vpnStatus: { text: '', type: '', status: null },
+    text: {
+        toggleButton: localisation.getIn(['dict', 'TOGGLE'])
+    }
 });
 

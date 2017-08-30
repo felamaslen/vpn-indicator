@@ -1,5 +1,6 @@
 {    
     "VPN_STATUS_ON": "VPN已连接并设置为默认网关",
     "VPN_STATUS_OFF": "VPN未设置为默认网关",
-    "VPN_STATUS_UNKNOWN": "VPN处于未知状态"
+    "VPN_STATUS_UNKNOWN": "VPN处于未知状态",
+    "TOGGLE": "切换"
 }

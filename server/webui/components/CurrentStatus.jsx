@@ -11,13 +11,13 @@ class CurrentStatus extends Component {
     render() {
         const classes = classNames({
             'current-status': true,
-            [this.props.statusText.get('type')]: !this.props.loading,
+            [this.props.status.get('type')]: !this.props.loading,
             loading: this.props.loading
         });
 
         return (
             <span className={classes}>
-                {this.props.statusText.get('text')}
+                {this.props.status.get('text')}
             </span>
         );
     }
@@ -25,7 +25,7 @@ class CurrentStatus extends Component {
 
 CurrentStatus.propTypes = {
     loading: PropTypes.bool,
-    statusText: PropTypes.instanceOf(map)
+    status: PropTypes.instanceOf(map)
 };
 
 export default CurrentStatus;
