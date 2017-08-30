@@ -1,0 +1,22 @@
+/**
+ * The initial application state is set here
+ */
+
+import { fromJS } from 'immutable';
+
+import { getLocalisation } from '../lang/';
+
+const localisation = getLocalisation();
+
+export default fromJS({
+    loading: false,
+    lang: localisation,
+    checkTimeout: 5000,
+    vpnStatus: { text: '', type: '', status: null },
+    text: {
+        title: localisation.getIn(['dict', 'TITLE']),
+        hostname: localisation.getIn(['dict', 'HOSTNAME']),
+        toggleButton: localisation.getIn(['dict', 'TOGGLE'])
+    }
+});
+

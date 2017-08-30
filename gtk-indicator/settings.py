@@ -17,13 +17,9 @@ SERVER_PORT = os.environ.get('SERVER_PORT')
 
 SERVER_URL = 'http://%s:%s' % (SERVER_IP, SERVER_PORT)
 
-SERVER_SSH = {
-        'ip': os.environ.get('SERVER_SSH_IP'),
-        'port': os.environ.get('SERVER_SSH_PORT'),
-        'key': os.environ.get('SERVER_SSH_KEY'),
-        'user': os.environ.get('SERVER_SSH_USER'),
-        'cmd': os.environ.get('SERVER_SSH_CMD')
-    }
+SERVER_AUTH_USERNAME = os.environ.get('SERVER_AUTH_USERNAME')
+SERVER_AUTH_PASSWORD = os.environ.get('SERVER_AUTH_PASSWORD')
 
 REQUEST_INTERVAL = 5.0
+HTTP_TIMEOUT = 0.5
 
