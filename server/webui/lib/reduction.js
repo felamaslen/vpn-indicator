@@ -12,6 +12,8 @@ export default fromJS({
     loading: false,
     lang: localisation,
     checkTimeout: 5000,
+    numBadChecks: 0,
+    maxTimeout: 1800000,
     vpnStatus: { text: '', type: '', status: null },
     text: {
         title: localisation.getIn(['dict', 'TITLE']),

@@ -44,8 +44,13 @@ function getVPNStatus(appState, status) {
 }
 
 export function handleVPNStatus(appState, status) {
+    const numBadChecks = status === null
+        ? appState.get('numBadChecks') + 1
+        : 0;
+
     return appState
         .set('vpnStatus', getVPNStatus(appState, status))
+        .set('numBadChecks', numBadChecks)
         .set('loading', false);
 }
 
