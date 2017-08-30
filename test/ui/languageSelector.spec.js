@@ -14,6 +14,7 @@ describe('<LanguageSelector/>', () => {
     it('should render a language selector', () => {
         const formDiv = wrapper.find('div.form-group');
         expect(formDiv).to.have.lengthOf(1);
+        expect(formDiv.is('.language-selector')).to.equal(true);
 
         const select = formDiv.find('select.form-control');
         expect(select).to.have.lengthOf(1);

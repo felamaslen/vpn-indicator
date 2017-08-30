@@ -28,8 +28,11 @@ class LanguageSelector extends Component {
         });
 
         return (
-            <div className="form-group">
-                <select className="form-control"
+            <div className="form-group language-selector">
+                <label htmlFor="language-select">
+                    Language:
+                </label>
+                <select name="language-select" className="form-control"
                     ref={langInputRef}
                     onChange={langInputOnChange}
                     defaultValue={this.props.value}>
