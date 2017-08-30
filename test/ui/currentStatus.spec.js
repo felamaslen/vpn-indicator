@@ -8,18 +8,19 @@ import CurrentStatus from '../../server/webui/components/CurrentStatus';
 describe('<CurrentStatus/>', () => {
     const testStatus = map({
         type: 'some_machine_value',
-        text: 'Human readable status'
+        text: 'Human readable status',
+        status: null
     });
 
     it('should have a status element', () => {
-        const wrapper = shallow(<CurrentStatus statusText={testStatus}/>);
+        const wrapper = shallow(<CurrentStatus status={testStatus}/>);
         expect(wrapper.find('span')).to.have.lengthOf(1);
     });
 
     it('should render a status property', () => {
-        const wrapper = shallow(<CurrentStatus loading={false} statusText={testStatus} />);
+        const wrapper = shallow(<CurrentStatus loading={false} status={testStatus} />);
 
-        expect(wrapper.instance().props.statusText).to.be.equal(testStatus);
+        expect(wrapper.instance().props.status).to.be.equal(testStatus);
 
         const span = wrapper.find('span');
         expect(span).to.have.lengthOf(1);
@@ -28,7 +29,7 @@ describe('<CurrentStatus/>', () => {
     });
 
     it('should render a loading spinner if loading', () => {
-        const wrapper = mount(<CurrentStatus loading={true} statusText={testStatus} />);
+        const wrapper = mount(<CurrentStatus loading={true} status={testStatus} />);
 
         expect(wrapper.instance().props.loading).to.equal(true);
         expect(wrapper.find('span')).to.have.lengthOf(1);

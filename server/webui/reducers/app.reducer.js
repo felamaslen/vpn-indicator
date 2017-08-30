@@ -1,5 +1,5 @@
 import { Map as map } from 'immutable';
-import localise from '../lang/';
+import localise, { getLocalisation } from '../lang/';
 
 function loadingVPNStatus(appState) {
     // could put an optimistic update here?
@@ -23,7 +23,7 @@ export function toggleVPNStatus(appState) {
     return loadingVPNStatus(appState);
 }
 
-function getVPNStatusText(appState, status) {
+function getVPNStatus(appState, status) {
     let type = null;
     let text = null;
 
@@ -40,12 +40,24 @@ function getVPNStatusText(appState, status) {
         type = 'unknown';
     }
 
-    return map({ text, type });
+    return map({ text, type, status });
 }
 
 export function handleVPNStatus(appState, status) {
     return appState
-        .set('vpnStatusText', getVPNStatusText(appState, status))
+        .set('vpnStatus', getVPNStatus(appState, status))
         .set('loading', false);
+}
+
+export function selectLanguage(appState, code) {
+    const langSet = appState.set('lang', getLocalisation(code));
+
+    const vpnStatus = getVPNStatus(
+        langSet, appState.getIn(['vpnStatus', 'status'])
+    );
+
+    return langSet
+        .setIn(['vpnStatus', 'text'], vpnStatus.get('text'))
+        .setIn(['text', 'toggleButton'], localise(langSet, 'TOGGLE'));
 }
 

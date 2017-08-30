@@ -1,0 +1,6 @@
+{
+    "VPN_STATUS_ON": "VPNが接続され、デフォルトゲートウェイとして設定されている",
+    "VPN_STATUS_OFF": "VPNがデフォルトゲートウェイとして設定されていない",
+    "VPN_STATUS_UNKNOWN": "VPNが不明な状態です",
+    "TOGGLE": "トグル"
+}
