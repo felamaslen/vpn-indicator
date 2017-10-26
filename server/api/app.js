@@ -7,7 +7,11 @@ const basicAuth = require('express-basic-auth');
 
 // dotenv is NOT loaded in config, since it's common to both
 // the backend and webui
-require('dotenv').config();
+const dotenv = require('dotenv');
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+}
+
 const config = require('../config')();
 
 function getOS() {

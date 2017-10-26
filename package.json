@@ -4,8 +4,8 @@
   "description": "Indicator server for VPN status",
   "main": "app.js",
   "scripts": {
-    "postinstall": "./node_modules/.bin/webpack",
-    "start": "node server/api/index.js",
+    "postinstall": "NODE_ENV=production ./node_modules/.bin/webpack",
+    "start": "NODE_ENV=production node server/api/index.js",
     "dev:srv": "NODE_ENV=dev nodemon -w ./server/api ./server/api/index.js",
     "dev:ui": "NODE_ENV=dev ./node_modules/.bin/webpack-dev-server",
     "test": "./node_modules/.bin/mocha --reporter spec --bail test/index.js",

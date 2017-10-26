@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const moduleConfig = require('./module.common');
 const plugins = require('./plugin.common');
@@ -18,9 +19,14 @@ module.exports = {
     resolve: {
         extensions: ['*', '.js', '.jsx']
     },
-    plugins: plugins.concat([
+    plugins: [
+        ...plugins,
+        new Dotenv({
+            path: path.join(__dirname, '../.env'),
+            safe: true
+        }),
         new webpack.HotModuleReplacementPlugin()
-    ]),
+    ],
     module: moduleConfig,
     devServer: {
         stats: {
