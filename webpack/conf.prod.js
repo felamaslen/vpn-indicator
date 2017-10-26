@@ -20,7 +20,9 @@ module.exports = {
     plugins: plugins.concat([
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify('production')
+                NODE_ENV: JSON.stringify('production'),
+                WEBUI_TITLE: JSON.stringify(process.env.WEBUI_TITLE),
+                GATEWAY_LAN: JSON.stringify(process.env.GATEWAY_LAN)
             }
         }),
         new webpack.optimize.UglifyJsPlugin({
