@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Indicator server for VPN status",
   "main": "app.js",
+  "engines": {
+    "node": ">=8"
+  },
   "scripts": {
     "postinstall": "NODE_ENV=production ./node_modules/.bin/webpack",
     "start": "NODE_ENV=production node server/api/index.js",
