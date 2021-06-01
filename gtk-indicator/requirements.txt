@@ -15,7 +15,7 @@ PyNaCl==1.1.2
 requests==2.18.4
 ruamel.yaml==0.15.32
 six==1.10.0
-urllib3==1.22
+urllib3==1.26.5
 vext==0.6.9
 vext.gi==0.6.8
 yarg==0.1.9
