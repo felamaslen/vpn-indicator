@@ -33,7 +33,7 @@
     "dotenv": "^4.0.0",
     "dotenv-webpack": "^1.5.4",
     "ejs": "^2.5.7",
-    "express": "^4.15.4",
+    "express": "^4.18.2",
     "express-basic-auth": "^1.1.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
