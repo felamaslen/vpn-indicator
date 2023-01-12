@@ -33,7 +33,7 @@
     "dotenv": "^4.0.0",
     "dotenv-webpack": "^1.5.4",
     "ejs": "^2.5.7",
-    "express": "^4.15.4",
+    "express": "^4.18.2",
     "express-basic-auth": "^1.1.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
@@ -63,7 +63,7 @@
     "eslint-plugin-react": "^7.3.0",
     "it-each": "^0.3.1",
     "jsdom": "^11.2.0",
-    "mocha": "^3.5.0",
+    "mocha": "^10.2.0",
     "nodemon": "^1.11.0",
     "react-test-renderer": "^15.6.1",
     "webpack-dev-server": "^2.7.1"
